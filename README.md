@@ -2,7 +2,7 @@
 
 **Not Completed Yet**
 
-I try to make a Epic Games Launcher that has better experence
+I try to make a Epic Games Launcher that has better experience
 
 build by Rust, Leptos, Tauri, Tailwindcss
 
