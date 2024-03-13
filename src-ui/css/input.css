@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    scrollbar-color: #0e0e0e #545454;
+    scrollbar-width: thin;
+    @apply text-primary select-none;
+  }
+
+  body {
+    @apply bg-base-100;
+  }
+}
+
+@layer base {
+  .input-group {
+    @apply relative;
+  }
+
+  .input-group .input {
+    @apply w-full pt-4;
+  }
+
+  .input-group .error {
+    @apply text-error text-xs font-thin invisible;
+  }
+
+  .input-group .input:invalid ~ .error {
+    @apply visible;
+  }
+
+  .input-group .input:focus ~ .error {
+    @apply invisible;
+  }
+
+  .input {
+    background-color: transparent;
+    @apply relative
+    rounded border-neutral border h-14 px-4
+    transition-all;
+  }
+
+  .input:invalid {
+    @apply border-error;
+  }
+
+  .input-group .input:focus ~ label {
+    @apply top-2 text-xs;
+  }
+
+  .input-group .input:not(:placeholder-shown) ~ label {
+    @apply top-2 text-xs;
+  }
+
+  .input-group label {
+    @apply absolute left-4 top-4 z-10 text-neutral text-sm transition-all 
+    cursor-text
+    pointer-events-none;
+  }
+
+  .input:focus {
+    @apply border-primary;
+  }
+}
+
+@layer base {
+  .btn {
+    @apply flex justify-center items-center text-center text-base-content bg-base-100 
+    px-4 py-2 rounded
+    w-fit
+    text-sm font-bold
+    transition-all duration-100;
+  }
+
+  .btn * {
+    @apply fill-base-content;
+  }
+
+  .btn-accent {
+    @apply text-primary bg-accent;
+  }
+
+  .btn-lg {
+    @apply w-full p-4;
+  }
+
+  .btn:disabled {
+    @apply cursor-default brightness-50;
+  }
+}
+
+@layer base {
+  .divider {
+    @apply flex flex-shrink 
+    items-center w-full h-4 my-4
+    whitespace-nowrap text-neutral;
+  }
+
+  .divider-horizontal {
+    @apply flex-col w-4 h-full my-0 mx-4;
+  }
+
+  .divider:not(:empty) {
+    @apply gap-4;
+  }
+
+  .divider::before {
+    content: "";
+    @apply w-full h-[.01rem] bg-neutral grow;
+  }
+
+  .divider::after {
+    content: "";
+    @apply w-full h-[.01rem] bg-neutral grow;
+  }
+
+  .divider-horizontal::before {
+    content: "";
+    @apply w-[.01rem] h-full;
+  }
+
+  .divider-horizontal::after {
+    content: "";
+    @apply w-[.01rem] h-full;
+  }
+}
+
+@layer base {
+  .checkbox-group {
+    @apply flex space-x-4 items-center cursor-pointer w-fit m-4;
+  }
+
+  .checkbox-group label {
+    @apply cursor-pointer;
+  }
+
+  .checkbox-group:hover .checkbox {
+    @apply ring-neutral/[.30] ring-10 bg-neutral/[.30];
+  }
+
+  .checkbox-group:hover .checkbox:checked {
+    @apply ring-accent/[.30] ring-10 bg-accent/[.30];
+  }
+
+  .checkbox {
+    @apply appearance-none w-5 h-5
+    border-2 border-primary
+    cursor-pointer
+    hover:ring-neutral/[.30] hover:ring-10 hover:bg-neutral/[.30]
+    checked:border-accent checked:bg-[url("/assets/svg/check.svg")]
+    checked:hover:ring-accent/[.30] checked:hover:ring-10 checked:hover:bg-accent/[.30];
+  }
+}

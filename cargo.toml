@@ -1,0 +1,15 @@
+[workspace]
+members = ["src-ui", "src-tauri"]
+
+[workspace.package]
+version = "0.0.1"
+edition = "2021"
+authors = ["Dvorak Chen"]
+repository = "https://github.com/dvorakchen/dvorak-epic-games-launcher"
+keys = ["Epic"]
+dependencies = "A better Epic Games Launcher"
+license = "MIT"
+
+[workspace.dependencies]
+email_address = "0.2.4"
+rand = "0.8.5"

@@ -1,0 +1,29 @@
+[package]
+name = "src_ui"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+repository.workspace = true
+keys.workspace = true
+dependencies.workspace = true
+license.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+console_error_panic_hook = "0.1.7"
+console_log = "1.0.0"
+leptos_router = { version = "0.6.9", features = ["nightly", "csr"] }
+leptos = { version = "0.6.9", features = ["csr", "nightly"] }
+log = "0.4.21"
+tauri-sys = { git = "https://github.com/JonasKruckenberg/tauri-sys", features = [
+    "all",
+] }
+futures = "0.3"
+gloo = { version = "0.11.0", features = ["timers", "futures"] }
+
+email_address = { workspace = true }
+rand = { workspace = true }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3"

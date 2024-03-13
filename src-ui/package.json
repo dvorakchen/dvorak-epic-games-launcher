@@ -1,0 +1,9 @@
+{
+  "name": "src-ui",
+  "private": true,
+  "version": "0.1.0",
+  "description": "",
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}
