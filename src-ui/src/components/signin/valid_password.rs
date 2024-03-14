@@ -1,19 +1,31 @@
-use std::rc::Rc;
+use std::{rc::Rc, str::FromStr};
 
 use super::{Container, Logo, SignInProcess};
-use crate::components::*;
+use crate::{components::*, models::User};
 use leptos::*;
+use leptos_router::use_navigate;
 
 #[component]
 pub(super) fn ValidPassword(email: String) -> impl IntoView {
+    let (msg_err, set_msg_err) = create_signal("");
+
+    provide_context(set_msg_err);
+
     view! {
         <Container>
             <Logo/>
-            <div class="mt-16 mb-6 text-center font-bold">"Sign In to your Epic Games Account"</div>
-            <form action="" class="flex flex-col">
+            <div class="mt-16 text-center font-bold">"Sign In to your Epic Games Account"</div>
+            {move || {
+                (!msg_err().is_empty())
+                    .then(|| {
+                        view! { <Alert message=msg_err()/> }
+                    })
+            }}
+
+            <main class="flex flex-col mt-6">
                 <EmailRead email=email.clone()/>
                 <PasswordInput email=email.clone()/>
-            </form>
+            </main>
             <BackToAllOptions/>
         </Container>
     }
@@ -50,6 +62,10 @@ fn PasswordInput(email: String) -> impl IntoView {
     let password_input: NodeRef<html::Input> = create_node_ref();
     let password_input_for_focus = Rc::new(password_input);
     let password_input_for_visible = Rc::new(password_input);
+    let password_input_for_submit = Rc::new(password_input);
+
+    let set_err_msg =
+        use_context::<WriteSignal<&str>>().expect("cannot found Write Signal 'err_msg'");
 
     create_effect(move |_| {
         password_input_for_focus
@@ -79,17 +95,63 @@ fn PasswordInput(email: String) -> impl IntoView {
             .expect("set password input attribute failed");
     };
 
+    let valid_password_action = create_action(|input: &String| {
+        let input = input.clone();
+        async move {
+            use gloo::timers::future::TimeoutFuture;
+            TimeoutFuture::new(1_000).await;
+
+            //  ONLY FOR DEBUG
+            const DEBUG_PASSWORD: &'static str = "123123";
+            if input == DEBUG_PASSWORD {
+                User::from_str("fake")
+                    .map_err(|_| "Sorry the credentials you are using are invalid.")
+            } else {
+                Err("Sorry the credentials you are using are invalid.")
+            }
+        }
+    });
+
+    // this handle when user sign in successed
+    create_effect(move |_| {
+        match (
+            valid_password_action.value()(),
+            valid_password_action.pending()(),
+        ) {
+            (Some(Ok(user)), false) => {
+                //  save signned in user informations
+                let _user = user;
+                let navigate = use_navigate();
+                navigate("/homepage", Default::default());
+            }
+            (Some(Err(err_msg)), false) => {
+                logging::log!("{}", err_msg);
+                set_err_msg(err_msg);
+            }
+            _ => (),
+        }
+    });
+
+    let handle_submit = move |ev: ev::SubmitEvent| {
+        ev.prevent_default();
+        let password = password_input_for_submit
+            .get()
+            .expect("password input not exist")
+            .value();
+        valid_password_action.dispatch(password);
+    };
+
     let handle_input_change = move |text: String| {
         set_password_empty(text.is_empty());
     };
 
     view! {
-        <div class="relative flex mt-6">
+        <form action="" class="relative flex flex-col mt-6" on:submit=handle_submit>
             <div class="grow">
                 <Input
                     input_type="password"
                     node_ref=password_input
-                    label="Password"
+                    label="Password DEBUG:123123"
                     required=true
                     invalid_message="Required"
                     on_change=handle_input_change
@@ -111,11 +173,23 @@ fn PasswordInput(email: String) -> impl IntoView {
                 }}
 
             </button>
-        </div>
-        <Forgot email=email.clone()/>
-        <button class="btn btn-accent btn-lg mt-6" disabled=disabled>
-            "SIGN IN"
-        </button>
+            <Forgot email=email.clone()/>
+            <button class="btn btn-accent btn-lg mt-6" disabled=disabled>
+                {move || {
+                    if valid_password_action.pending()() {
+                        view! {
+                            <span class="animate-spin w-5 fill-primary">
+                                <ArrowRepeat/>
+                            </span>
+                        }
+                            .into_view()
+                    } else {
+                        view! { "SIGN IN" }.into_view()
+                    }
+                }}
+
+            </button>
+        </form>
     }
 }
 

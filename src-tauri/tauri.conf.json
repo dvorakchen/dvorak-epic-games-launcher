@@ -56,11 +56,11 @@
       {
         "fullscreen": false,
         "height": 768,
-        "minHeight": 500,
+        "minHeight": 700,
         "resizable": true,
         "title": "Epic",
         "width": 1450,
-        "minWidth": 800,
+        "minWidth": 1024,
         "center": true
       }
     ]

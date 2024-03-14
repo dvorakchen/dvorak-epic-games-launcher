@@ -121,7 +121,9 @@ pub fn DropDown(
                 }}
 
                 <span class="grow">{move || selected().value}</span>
-                <ChevronDown/>
+                <span class="fill-primary">
+                    <ChevronDown/>
+                </span>
             </div>
             <div class="relative w-full">
                 <ul

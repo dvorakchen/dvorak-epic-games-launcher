@@ -1,6 +1,6 @@
 use leptos::*;
 
-const SVG_DEFAULT_CSS: &'static str = "fill-inherit w-inherit h-inherit";
+const SVG_DEFAULT_CSS: &'static str = "fill-inherit w-inherit h-inherit stroke-inherit";
 
 pub enum IconTypes {
     Earth,
@@ -19,10 +19,10 @@ pub fn Gear() -> impl IntoView {
     view! {
         <svg
             xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
             width="16"
             height="16"
-            fill="currentColor"
-            class="bi bi-gear-fill"
+            class=SVG_DEFAULT_CSS
             viewBox="0 0 16 16"
         >
             <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"></path>
@@ -34,11 +34,11 @@ pub fn Gear() -> impl IntoView {
 pub fn ChevronLeft() -> impl IntoView {
     view! {
         <svg
+            class=SVG_DEFAULT_CSS
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-chevron-left"
             viewBox="0 0 16 16"
         >
             <path
@@ -56,8 +56,8 @@ pub fn ChevronDown() -> impl IntoView {
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
+            class=SVG_DEFAULT_CSS
             fill="currentColor"
-            class="bi bi-chevron-down"
             viewBox="0 0 16 16"
         >
             <path
@@ -152,6 +152,43 @@ pub fn EyeSlash() -> impl IntoView {
             <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z"></path>
             <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829"></path>
             <path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"></path>
+        </svg>
+    }
+}
+
+#[component]
+pub fn ArrowRepeat() -> impl IntoView {
+    view! {
+        <svg
+            class=SVG_DEFAULT_CSS
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+        >
+            <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"></path>
+            <path
+                fill-rule="evenodd"
+                d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"
+            ></path>
+        </svg>
+    }
+}
+
+#[component]
+pub fn XCircle() -> impl IntoView {
+    view! {
+        <svg
+            class=SVG_DEFAULT_CSS
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+        >
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"></path>
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"></path>
         </svg>
     }
 }

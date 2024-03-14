@@ -18,7 +18,9 @@ where
                     on:click=handle_back
                 >
                     <div class="flex items-center p-4 h-full text-neutral">
-                        <ChevronLeft/>
+                        <span class="fill-primary">
+                            <ChevronLeft/>
+                        </span>
                         <div class="divider divider-horizontal"></div>
                         <span>"SETTINGS"</span>
                     </div>

@@ -23,6 +23,8 @@ gloo = { version = "0.11.0", features = ["timers", "futures"] }
 
 email_address = { workspace = true }
 rand = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3"

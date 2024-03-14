@@ -1,7 +1,9 @@
+mod forgot_password;
 mod settings;
 mod valid_email;
 mod valid_password;
 
+use forgot_password::ForgotPassword;
 use settings::Settings;
 use valid_email::ValidEmail;
 use valid_password::ValidPassword;
@@ -37,19 +39,21 @@ pub fn SignIn() -> impl IntoView {
                 <div class="w-[30rem] min-h-[35rem]">
 
                     {move || {
-                        match process() {
-                            SignInProcess::ValidEmail => view! { <ValidEmail/> },
-                            SignInProcess::ValidPassword(email) => {
-                                view! { <ValidPassword email=email/> }
-                            }
-                            SignInProcess::ForgotPassword(email) => view! {}.into_view(),
-                        }
+                    match process() {
+                    SignInProcess::ValidEmail => view! { <ValidEmail/> },
+                    SignInProcess::ValidPassword(email) => {
+                    view! { <ValidPassword email=email/> }
+                    }
+                    SignInProcess::ForgotPassword(email) => {
+                    view! { <ForgotPassword email=email/> }.into_view()
+                    }
+                    }
                     }}
 
-                // <ValidPassword email="dvorakchen@outlook.com".to_string()/>
+                    // <ForgotPassword email="dvorakchen@outlook.com".to_string()/>
                 </div>
             </div>
-            <button class="fixed left-8 bottom-8" on:click=handle_settings>
+            <button class="fixed left-8 bottom-8 w-4 h-4 fill-primary" on:click=handle_settings>
                 <Gear/>
             </button>
             <Show when=show_settings fallback=|| view! {}>

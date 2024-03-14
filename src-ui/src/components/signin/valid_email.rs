@@ -100,7 +100,7 @@ fn EmailInput() -> impl IntoView {
     };
 
     view! {
-        <form action="" class="flex flex-col" on:submit=handle_submit>
+        <form class="flex flex-col" on:submit=handle_submit>
             <Input
                 class="input"
                 node_ref=email_input
@@ -117,8 +117,8 @@ fn EmailInput() -> impl IntoView {
                     {move || {
                         if valid_email_action.pending()() {
                             view! {
-                                <span class="animate-spin w-5">
-                                    <DashCircle/>
+                                <span class="animate-spin w-5 fill-primary">
+                                    <ArrowRepeat/>
                                 </span>
                             }
                                 .into_view()
