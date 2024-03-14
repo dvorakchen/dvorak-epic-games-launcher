@@ -1,10 +1,12 @@
 mod checkbox;
 mod dropdown;
 mod icons;
+mod input;
 
 pub use checkbox::*;
 pub use dropdown::*;
 pub use icons::*;
+pub use input::*;
 
 use leptos::*;
 

@@ -12,6 +12,18 @@
   body {
     @apply bg-base-100;
   }
+
+  .fill-inherit {
+    fill: inherit;
+  }
+
+  .w-inherit {
+    width: inherit;
+  }
+
+  .h-inherit {
+    height: inherit;
+  }
 }
 
 @layer base {
@@ -38,8 +50,12 @@
   .input {
     background-color: transparent;
     @apply relative
-    rounded border-neutral border h-14 px-4
+    rounded border-neutral border h-14 px-[.9rem]
     transition-all;
+  }
+
+  .input-group:has(.input:disabled) {
+    @apply bg-base-300 text-neutral;
   }
 
   .input:invalid {
@@ -62,6 +78,20 @@
 
   .input:focus {
     @apply border-primary;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    @apply caret-primary;
+    -webkit-text-fill-color: theme(colors.primary);
+    -webkit-box-shadow: 0 0 0px 1000px theme(colors.base-200) inset;
   }
 }
 

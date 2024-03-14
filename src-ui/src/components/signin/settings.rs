@@ -27,14 +27,18 @@ where
                     <section class="flex flex-col space-y-4">
                         <h1>"LANGUAGE"</h1>
                         <div class="w-96">
-                            <DropDown options=vec![
-                                DropDownItem::new_default("Chinese", "中文（中国）"),
-                                DropDownItem::new_str("English", "English"),
-                                DropDownItem::new_str("Chinese1", "中文（中国）"),
-                                DropDownItem::new_str("English1", "English"),
-                                DropDownItem::new_str("Chinese2", "中文（中国）"),
-                                DropDownItem::new_str("English2", "English"),
-                            ]/>
+                            <DropDown
+                                list=vec![
+                                    DropDownItem::new_default("Chinese", "中文（中国）"),
+                                    DropDownItem::new_str("English", "English"),
+                                    DropDownItem::new_str("Chinese1", "中文（中国）"),
+                                    DropDownItem::new_str("English1", "English"),
+                                    DropDownItem::new_str("Chinese2", "中文（中国）"),
+                                    DropDownItem::new_str("English2", "English"),
+                                ]
+
+                                prefix=IconTypes::Earth
+                            />
 
                         </div>
                     </section>

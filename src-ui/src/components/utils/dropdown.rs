@@ -1,7 +1,7 @@
 use crate::components::*;
 use leptos::*;
 
-pub type Options = Vec<DropDownItem>;
+pub type DropDownList = Vec<DropDownItem>;
 
 #[derive(Debug, Clone)]
 pub struct DropDownItem {
@@ -31,7 +31,8 @@ impl DropDownItem {
 #[component]
 pub fn DropDown(
     #[prop(optional)] class: &'static str,
-    options: Options,
+    list: DropDownList,
+    #[prop(optional)] prefix: Option<IconTypes>,
     #[prop(into, optional)] on_change: Option<Callback<DropDownItem>>,
 ) -> impl IntoView {
     let id = format!("dvorak-dropdown-{}", rand::random::<usize>());
@@ -40,7 +41,7 @@ pub fn DropDown(
 
     use leptos_dom::helpers::window_event_listener;
 
-    let default_display = options
+    let default_display = list
         .iter()
         .find(|v| v.default)
         .map_or(DropDownItem::new_str("", ""), |v| v.clone());
@@ -65,7 +66,7 @@ pub fn DropDown(
 
     let unselected = move || {
         let selected_key = selected().key;
-        let un = options
+        let un = list
             .iter()
             .filter_map(|v| {
                 if v.key != selected_key {
@@ -111,7 +112,14 @@ pub fn DropDown(
                 py-4 px-6 gap-4 cursor-pointer"
                 on:click=handle_click
             >
-                <Earth/>
+
+                {if let Some(icon_types) = prefix {
+                    view! { <span class="fill-primary w-4 h-4">{icon_types.into_view()}</span> }
+                        .into_view()
+                } else {
+                    view! {}.into_view()
+                }}
+
                 <span class="grow">{move || selected().value}</span>
                 <ChevronDown/>
             </div>

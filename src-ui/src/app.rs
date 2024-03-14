@@ -4,12 +4,11 @@ use leptos_router::*;
 
 #[component]
 pub fn App() -> impl IntoView {
-
     view! {
         <Router>
             <Routes>
                 <Route path="/" view=Transfer/>
-                <Route path="/login" view=Login/>
+                <Route path="/login" view=SignIn/>
             </Routes>
         </Router>
     }
