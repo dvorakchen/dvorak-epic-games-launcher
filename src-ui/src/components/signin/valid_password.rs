@@ -1,15 +1,19 @@
 use std::{rc::Rc, str::FromStr};
 
-use super::{Container, Logo, SignInProcess};
+use super::{Container, EmailContext, Logo, SignInProcess};
 use crate::{components::*, models::User};
 use leptos::*;
 use leptos_router::use_navigate;
 
 #[component]
-pub(super) fn ValidPassword(email: String) -> impl IntoView {
+pub(super) fn ValidPassword() -> impl IntoView {
     let (msg_err, set_msg_err) = create_signal("");
 
     provide_context(set_msg_err);
+
+    let email_context =
+        use_context::<RwSignal<EmailContext>>().expect("cannot found context 'EmaillContext'");
+    let email = String::clone(&email_context.get());
 
     view! {
         <Container>
@@ -18,13 +22,17 @@ pub(super) fn ValidPassword(email: String) -> impl IntoView {
             {move || {
                 (!msg_err().is_empty())
                     .then(|| {
-                        view! { <Alert message=msg_err()/> }
+                        view! {
+                            <div class="mt-4">
+                                <Alert message=msg_err()/>
+                            </div>
+                        }
                     })
             }}
 
             <main class="flex flex-col mt-6">
                 <EmailRead email=email.clone()/>
-                <PasswordInput email=email.clone()/>
+                <PasswordInput/>
             </main>
             <BackToAllOptions/>
         </Container>
@@ -58,7 +66,7 @@ fn EmailRead(email: String) -> impl IntoView {
 }
 
 #[component]
-fn PasswordInput(email: String) -> impl IntoView {
+fn PasswordInput() -> impl IntoView {
     let password_input: NodeRef<html::Input> = create_node_ref();
     let password_input_for_focus = Rc::new(password_input);
     let password_input_for_visible = Rc::new(password_input);
@@ -173,7 +181,7 @@ fn PasswordInput(email: String) -> impl IntoView {
                 }}
 
             </button>
-            <Forgot email=email.clone()/>
+            <Forgot/>
             <button class="btn btn-accent btn-lg mt-6" disabled=disabled>
                 {move || {
                     if valid_password_action.pending()() {
@@ -194,12 +202,12 @@ fn PasswordInput(email: String) -> impl IntoView {
 }
 
 #[component]
-fn Forgot(email: String) -> impl IntoView {
+fn Forgot() -> impl IntoView {
     let set_process = use_context::<WriteSignal<SignInProcess>>()
         .expect("cannot found Write Signal 'SignInProcess'");
 
     let handle_forgot = move |_| {
-        set_process(SignInProcess::ForgotPassword(email.clone()));
+        set_process(SignInProcess::ForgotPassword);
     };
 
     view! {

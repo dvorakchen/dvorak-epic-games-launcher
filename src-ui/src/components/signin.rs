@@ -1,8 +1,12 @@
+mod email_sent;
 mod forgot_password;
 mod settings;
 mod valid_email;
 mod valid_password;
 
+use std::ops::Deref;
+
+use email_sent::EmailSent;
 use forgot_password::ForgotPassword;
 use settings::Settings;
 use valid_email::ValidEmail;
@@ -11,17 +15,38 @@ use valid_password::ValidPassword;
 use crate::components::*;
 use leptos::*;
 
+/// email context for passing inside current context,
+/// just only used inside current module
+///
+/// # example
+/// ```
+/// # let email_context = use_context::<RwSignal<EmailContext>>().expect("cannot found context 'EmaillContext'");
+///
+/// ````
+#[derive(Clone)]
+pub(self) struct EmailContext(String);
+
+impl Deref for EmailContext {
+    type Target = String;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
 #[derive(Clone, Debug)]
 pub(self) enum SignInProcess {
     ValidEmail,
-    ValidPassword(String),
-    ForgotPassword(String),
+    ValidPassword,
+    ForgotPassword,
+    EmailSent,
 }
 
 #[component]
 pub fn SignIn() -> impl IntoView {
     let (process, set_process) = create_signal(SignInProcess::ValidEmail);
     provide_context(set_process);
+    provide_context(create_rw_signal(EmailContext("".to_string())));
 
     let (show_settings, set_show_settings) = create_signal(false);
 
@@ -35,22 +60,20 @@ pub fn SignIn() -> impl IntoView {
 
     view! {
         <div class="relative bg-base-100 flex">
-            <div class="mx-auto mt-8">
+            <div class="mx-auto my-8">
                 <div class="w-[30rem] min-h-[35rem]">
 
                     {move || {
-                    match process() {
-                    SignInProcess::ValidEmail => view! { <ValidEmail/> },
-                    SignInProcess::ValidPassword(email) => {
-                    view! { <ValidPassword email=email/> }
-                    }
-                    SignInProcess::ForgotPassword(email) => {
-                    view! { <ForgotPassword email=email/> }.into_view()
-                    }
-                    }
+                        match process() {
+                            SignInProcess::ValidEmail => view! { <ValidEmail/> },
+                            SignInProcess::ValidPassword => {
+                                view! { <ValidPassword/> }
+                            }
+                            SignInProcess::ForgotPassword => view! { <ForgotPassword/> }.into_view(),
+                            SignInProcess::EmailSent => view! { <EmailSent/> },
+                        }
                     }}
 
-                    // <ForgotPassword email="dvorakchen@outlook.com".to_string()/>
                 </div>
             </div>
             <button class="fixed left-8 bottom-8 w-4 h-4 fill-primary" on:click=handle_settings>

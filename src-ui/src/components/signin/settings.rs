@@ -9,7 +9,7 @@ where
     let handle_back = move |_| back();
 
     view! {
-        <div class="fixed inset-1 z-10 bg-base-200">
+        <div class="fixed inset-1 z-10 bg-base-200 overflow-y-scroll scrollbar-w-none">
             <div class="flex flex-col">
                 <nav
                     class="h-16 w-full border-b border-b-neutral
@@ -25,7 +25,7 @@ where
                         <span>"SETTINGS"</span>
                     </div>
                 </nav>
-                <main class="flex flex-col px-10 py-8 space-y-4">
+                <main class="flex flex-col px-10 pt-8 pb-2 space-y-4">
                     <section class="flex flex-col space-y-4">
                         <h1>"LANGUAGE"</h1>
                         <div class="w-96">
@@ -62,9 +62,35 @@ where
                             "Epic Games Store Roadmap"
                         </Action>
                     </section>
+                    <div class="divider"></div>
+                    <footer class="flex flex-col">
+                        <div class="text-center flex justify-center">
+                            <FooterLink link="">"About Epic Games"</FooterLink>
+                            <span class="h-auto">
+                                <div class="divider divider-horizontal"></div>
+                            </span>
+                            <FooterLink link="">"About Epic Games"</FooterLink>
+                            <span class="h-auto">
+                                <div class="divider divider-horizontal"></div>
+                            </span>
+                            <FooterLink link="">"About Epic Games"</FooterLink>
+                        </div>
+                        <div class="text-center text-neutral mt-8">
+                            "**.*.*-000000000+++Portal+Release-Live"
+                        </div>
+                    </footer>
                 </main>
             </div>
         </div>
+    }
+}
+
+#[component]
+fn FooterLink(link: &'static str, children: Children) -> impl IntoView {
+    view! {
+        <OutLink class="text-neutral hover:text-primary" link=link>
+            {children()}
+        </OutLink>
     }
 }
 

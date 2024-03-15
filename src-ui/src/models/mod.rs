@@ -12,6 +12,7 @@ impl FromStr for User {
     type Err = &'static str;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
+        _ = s;
         Ok(Self {
             id: "".to_string(),
             name: "Dvorak Chen".to_string(),

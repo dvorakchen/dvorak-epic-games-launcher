@@ -1,6 +1,6 @@
 use std::rc::Rc;
 
-use super::{Container, Logo};
+use super::{Container, EmailContext, Logo};
 use crate::components::*;
 use email_address::*;
 use leptos::*;
@@ -29,6 +29,9 @@ fn EmailInput() -> impl IntoView {
     let email_input_for_submit = Rc::clone(&email_input_for_effect);
     let email_input_for_action = Rc::clone(&email_input_for_effect);
     let (email_valid, set_email_valid) = create_signal(false);
+
+    let email_context =
+        use_context::<RwSignal<EmailContext>>().expect("cannot found context 'EmaillContext'");
 
     use super::SignInProcess;
     let set_process =
@@ -74,16 +77,12 @@ fn EmailInput() -> impl IntoView {
             .get()
             .expect("Email input not exist")
             .value();
-        match va {
-            (Some(true), false) => {
-                logging::log!("to valid password");
-                set_process(SignInProcess::ValidPassword(email))
-            }
+        email_context.set(EmailContext(email));
 
-            _ => {
-                logging::log!("to valid password fail");
-                ()
-            }
+        match va {
+            (Some(true), false) => set_process(SignInProcess::ValidPassword),
+
+            _ => (),
         }
     });
 

@@ -28,6 +28,10 @@
   .h-inherit {
     height: inherit;
   }
+
+  .scrollbar-w-none {
+    scrollbar-width: none;
+  }
 }
 
 @layer base {
@@ -101,15 +105,12 @@
 
 @layer base {
   .btn {
-    @apply flex justify-center items-center text-center text-base-content bg-base-100 
+    @apply flex justify-center items-center text-center text-base-content bg-base-300 
     px-4 py-2 rounded
     w-fit
     text-sm font-bold
-    transition-all duration-100;
-  }
-
-  .btn * {
-    @apply fill-base-content;
+    transition-all duration-100
+    hover:brightness-105;
   }
 
   .btn-accent {
