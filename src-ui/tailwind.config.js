@@ -20,11 +20,16 @@ module.exports = {
       },
       animation: {
         flash: "flash",
+        "move-25": "move-25 1s linear infinite",
       },
       keyframes: {
         flash: {
           "0%": { scale: "90%" },
           "100%": { scale: "100%" },
+        },
+        "move-25": {
+          "0%": { transform: "translateX(0px)" },
+          "100%": { transform: "translateX(-25px)" },
         },
       },
     },

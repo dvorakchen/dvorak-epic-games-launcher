@@ -1,16 +1,20 @@
-mod checkbox;
-mod dropdown;
-mod icons;
-mod input;
 mod alert;
 mod button;
+mod checkbox;
+mod dropdown;
+mod epic_loading;
+mod homepage;
+mod icons;
+mod input;
 
+pub use alert::*;
+pub use button::*;
 pub use checkbox::*;
 pub use dropdown::*;
+pub use epic_loading::*;
+pub use homepage::*;
 pub use icons::*;
 pub use input::*;
-pub use alert::*;
-pub use button::Button;
 
 use leptos::*;
 

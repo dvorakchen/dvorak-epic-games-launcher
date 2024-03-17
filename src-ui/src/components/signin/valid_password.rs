@@ -133,7 +133,6 @@ fn PasswordInput() -> impl IntoView {
                 navigate("/homepage", Default::default());
             }
             (Some(Err(err_msg)), false) => {
-                logging::log!("{}", err_msg);
                 set_err_msg(err_msg);
             }
             _ => (),

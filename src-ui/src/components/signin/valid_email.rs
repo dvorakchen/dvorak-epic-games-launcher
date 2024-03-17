@@ -72,7 +72,6 @@ fn EmailInput() -> impl IntoView {
     // if email is passed, redirect to 'Valid Password'
     create_effect(move |_| {
         let va = (valid_email_action.value()(), valid_email_action.pending()());
-        logging::log!("valid_email_action: {:?}", va);
         let email = email_input_for_action
             .get()
             .expect("Email input not exist")

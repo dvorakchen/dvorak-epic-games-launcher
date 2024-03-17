@@ -59,9 +59,9 @@ pub fn SignIn() -> impl IntoView {
     };
 
     view! {
-        <div class="relative bg-base-100 flex">
-            <div class="mx-auto my-8">
-                <div class="w-[30rem] min-h-[35rem]">
+        <div class="relative bg-base-100 flex min-h-screen">
+            <div class="mx-auto my-8 flex">
+                <div class="w-[30rem] min-h-[35rem] m-auto">
 
                     {move || {
                         match process() {
@@ -99,8 +99,8 @@ pub(self) fn Container(children: Children) -> impl IntoView {
 pub(self) fn Logo() -> impl IntoView {
     view! {
         <div class="flex justify-center">
-            <div class="w-14">
-                <img src="/assets/images/Epic-white.png" alt="Epic"/>
+            <div class="w-14 fill-white">
+                <Epic/>
             </div>
         </div>
     }
