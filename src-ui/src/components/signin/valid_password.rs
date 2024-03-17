@@ -182,21 +182,13 @@ fn PasswordInput() -> impl IntoView {
 
             </button>
             <Forgot/>
-            <button class="btn btn-accent btn-lg mt-6" disabled=disabled>
-                {move || {
-                    if valid_password_action.pending()() {
-                        view! {
-                            <span class="animate-spin w-5 fill-primary">
-                                <ArrowRepeat/>
-                            </span>
-                        }
-                            .into_view()
-                    } else {
-                        view! { "SIGN IN" }.into_view()
-                    }
-                }}
-
-            </button>
+            <Button
+                class="btn-lg btn-accent mt-6"
+                disabled=Signal::derive(disabled)
+                loading=valid_password_action.pending()
+            >
+                "SIGN IN"
+            </Button>
         </form>
     }
 }

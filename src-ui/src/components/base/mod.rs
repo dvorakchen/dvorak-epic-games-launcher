@@ -3,12 +3,14 @@ mod dropdown;
 mod icons;
 mod input;
 mod alert;
+mod button;
 
 pub use checkbox::*;
 pub use dropdown::*;
 pub use icons::*;
 pub use input::*;
 pub use alert::*;
+pub use button::Button;
 
 use leptos::*;
 

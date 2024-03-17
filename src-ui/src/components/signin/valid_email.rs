@@ -111,22 +111,13 @@ fn EmailInput() -> impl IntoView {
             />
 
             <div class="flex justify-center my-4">
-                <button class="btn btn-lg btn-accent" disabled=disabled>
-
-                    {move || {
-                        if valid_email_action.pending()() {
-                            view! {
-                                <span class="animate-spin w-5 fill-primary">
-                                    <ArrowRepeat/>
-                                </span>
-                            }
-                                .into_view()
-                        } else {
-                            view! { "CONTINUE" }.into_view()
-                        }
-                    }}
-
-                </button>
+                <Button
+                    class="btn-lg btn-accent"
+                    disabled=Signal::derive(disabled)
+                    loading=valid_email_action.pending()
+                >
+                    "CONTINUE"
+                </Button>
             </div>
         </form>
     }

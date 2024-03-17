@@ -1,4 +1,5 @@
 use super::{Container, Logo, SignInProcess};
+use crate::components::*;
 use leptos::*;
 
 #[component]
@@ -19,9 +20,9 @@ pub fn EmailSent() -> impl IntoView {
                     "An email has been sent to your email address with instructions on how to reset your passwor. "
                     "if your don't receive it within a few minutes, please check that you used the e-mail address for your Epic Games account and try again or contact us for help."
                 </p>
-                <button class="btn btn-lg" on:click=handle_signin>
+                <Button class="btn-lg" on:click=handle_signin>
                     "SIGN IN"
-                </button>
+                </Button>
             </div>
         </Container>
     }

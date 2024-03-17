@@ -90,21 +90,14 @@ pub(super) fn ForgotPassword() -> impl IntoView {
                             })
                     }}
 
-                    <button class="btn btn-accent btn-lg" disabled=button_disable>
-                        {move || {
-                            if send_email_action.pending()() {
-                                view! {
-                                    <span class="animate-spin w-5 fill-primary">
-                                        <ArrowRepeat/>
-                                    </span>
-                                }
-                                    .into_view()
-                            } else {
-                                view! { "SEND EMAIL" }.into_view()
-                            }
-                        }}
+                    <Button
+                        class="btn-lg btn-accent mt-6"
+                        disabled=Signal::derive(button_disable)
+                        loading=send_email_action.pending()
+                    >
+                        "SEND EMAIL"
+                    </Button>
 
-                    </button>
                 </form>
                 <div class="text-center text-sm">
                     <span class="text-neutral">"Remember your password? "</span>
