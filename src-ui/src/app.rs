@@ -8,7 +8,7 @@ pub fn App() -> impl IntoView {
         <Router>
             <Routes>
                 <Route path="/" view=Transfer/>
-                <Route path="/login" view=SignIn/>
+                <Route path="/sign_in" view=SignIn/>
                 <Route path="/homepage" view=HomePage/>
             </Routes>
         </Router>

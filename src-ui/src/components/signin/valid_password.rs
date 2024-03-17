@@ -1,7 +1,8 @@
-use std::{rc::Rc, str::FromStr};
+use std::rc::Rc;
 
 use super::{Container, EmailContext, Logo, SignInProcess};
-use crate::{components::*, models::User};
+use crate::components::*;
+use crate::server::signin_signout::sign_in;
 use leptos::*;
 use leptos_router::use_navigate;
 
@@ -72,6 +73,10 @@ fn PasswordInput() -> impl IntoView {
     let password_input_for_visible = Rc::new(password_input);
     let password_input_for_submit = Rc::new(password_input);
 
+    let email_context =
+        use_context::<RwSignal<EmailContext>>().expect("cannot found context 'EmaillContext'");
+    let email = String::clone(&email_context.get());
+
     let set_err_msg =
         use_context::<WriteSignal<&str>>().expect("cannot found Write Signal 'err_msg'");
 
@@ -103,20 +108,16 @@ fn PasswordInput() -> impl IntoView {
             .expect("set password input attribute failed");
     };
 
-    let valid_password_action = create_action(|input: &String| {
-        let input = input.clone();
+    let valid_password_action = create_action(|input: &(String, String)| {
+        let (email, password) = input.clone();
+
         async move {
             use gloo::timers::future::TimeoutFuture;
             TimeoutFuture::new(1_000).await;
 
-            //  ONLY FOR DEBUG
-            const DEBUG_PASSWORD: &'static str = "123123";
-            if input == DEBUG_PASSWORD {
-                User::from_str("fake")
-                    .map_err(|_| "Sorry the credentials you are using are invalid.")
-            } else {
-                Err("Sorry the credentials you are using are invalid.")
-            }
+            sign_in(email, password)
+                .await
+                .map_err(|_| "Sorry the credentials you are using are invalid.")
         }
     });
 
@@ -126,9 +127,9 @@ fn PasswordInput() -> impl IntoView {
             valid_password_action.value()(),
             valid_password_action.pending()(),
         ) {
-            (Some(Ok(user)), false) => {
+            (Some(Ok(info)), false) => {
                 //  save signned in user informations
-                let _user = user;
+                info.store();
                 let navigate = use_navigate();
                 navigate("/homepage", Default::default());
             }
@@ -145,7 +146,7 @@ fn PasswordInput() -> impl IntoView {
             .get()
             .expect("password input not exist")
             .value();
-        valid_password_action.dispatch(password);
+        valid_password_action.dispatch((email.clone(), password));
     };
 
     let handle_input_change = move |text: String| {
