@@ -9,7 +9,10 @@ pub fn App() -> impl IntoView {
             <Routes>
                 <Route path="/" view=Transfer/>
                 <Route path="/sign_in" view=SignIn/>
-                <Route path="/homepage" view=HomePage/>
+                <Route path="/homepage" view=HomePage>
+                    <Route path="" view=Store/>
+                    <Route path="library" view=Library/>
+                </Route>
             </Routes>
         </Router>
     }

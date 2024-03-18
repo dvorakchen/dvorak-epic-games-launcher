@@ -11,7 +11,7 @@ pub fn Transfer() -> impl IntoView {
             let status = init_connect_and_sign_in().await;
 
             match status {
-                InitStatus::ConnectFail => {}
+                // InitStatus::ConnectFail => {}
                 InitStatus::SignedOut => {
                     location().set_href("/sign_in").expect("redirect fail");
                 }
