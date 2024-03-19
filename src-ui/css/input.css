@@ -36,6 +36,24 @@
   .scrollbar-w-none {
     scrollbar-width: none;
   }
+
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+
+  input[type="search"]::-moz-search-cancel-button,
+  input[type="search"]::-moz-search-decoration {
+    -moz-appearance: none;
+  }
+
+  input[type="search"]::-ms-clear {
+    display: none;
+  }
+
+  input[type="search"]::-ms-reveal {
+    display: none;
+  }
 }
 
 @layer base {
@@ -115,6 +133,10 @@
     text-sm font-bold
     transition-all duration-100
     hover:brightness-105;
+  }
+
+  .btn-circle {
+    @apply rounded-full;
   }
 
   .btn-accent {
