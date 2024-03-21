@@ -1,7 +1,7 @@
 pub mod signin_signout;
 
-use signin_signout::*;
 use crate::storages::get_signed_in_user_info;
+use signin_signout::*;
 
 pub enum InitStatus {
     // ConnectFail,

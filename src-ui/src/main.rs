@@ -1,8 +1,8 @@
 mod app;
 mod components;
-mod utils;
 mod server;
 mod storages;
+mod utils;
 
 use app::App;
 use leptos::*;

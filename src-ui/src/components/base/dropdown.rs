@@ -1,4 +1,5 @@
 use crate::components::*;
+use crate::utils::is_click_outside;
 use leptos::*;
 
 pub type DropDownList = Vec<DropDownItem>;
@@ -51,12 +52,8 @@ pub fn DropDown(
 
     let handle_click_outside = window_event_listener(ev::mouseup, move |ev| {
         let container: HtmlElement<html::Div> = container.get().unwrap();
-        let x = ev.page_x() as f32;
-        let y = ev.page_y() as f32;
-        if let Some(element) = document().element_from_point(x, y) {
-            if !container.contains(Some(&element.into())) {
-                set_show_options(false);
-            }
+        if is_click_outside(ev.page_x() as f32, ev.page_y() as f32, container) {
+            set_show_options(false);
         }
     });
 

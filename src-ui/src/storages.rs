@@ -13,7 +13,6 @@ pub fn get_signed_in_user_info() -> Option<SignedInInfo> {
 }
 
 /// used when sign out
-#[allow(dead_code)]
 pub fn clear_all() {
     LocalStorage::clear();
 }

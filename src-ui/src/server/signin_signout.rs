@@ -1,4 +1,4 @@
-use crate::storages::save_signed_in_user_info;
+use crate::storages::{clear_all, save_signed_in_user_info};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
@@ -36,4 +36,8 @@ pub async fn sign_in(
     } else {
         Err(SignInError::WrongCredential)
     }
+}
+
+pub fn sign_out() {
+    clear_all();
 }

@@ -155,7 +155,7 @@
 @layer base {
   .divider {
     @apply flex flex-shrink 
-    items-center w-full h-4 my-4
+    items-center w-full h-4 my-2
     whitespace-nowrap text-neutral;
   }
 
