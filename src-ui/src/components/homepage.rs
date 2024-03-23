@@ -1,9 +1,14 @@
+mod friends_tab;
 mod library;
 mod store;
+use friends_tab::Friends;
 pub use library::Library;
 pub use store::Store;
 
-use crate::{components::*, server::signin_signout, storages::get_signed_in_user_info, utils::is_click_outside};
+use crate::{
+    components::*, server::signin_signout, storages::get_signed_in_user_info,
+    utils::is_click_outside,
+};
 use leptos::*;
 use leptos_router::*;
 
@@ -111,26 +116,6 @@ fn TopNav() -> impl IntoView {
                 </div>
             </div>
         </div>
-    }
-}
-
-#[component]
-fn Friends() -> impl IntoView {
-    use crate::components::People as PeopleIcon;
-
-    view! {
-        <span class="relative">
-            <button class="btn btn-circle bg-base-200 cursor-pointer w-10 h-10
-            hover:bg-base-300 focus:ring-primary focus:ring-1">
-                <span class="fill-primary">
-                    <PeopleIcon/>
-                </span>
-            </button>
-
-            <dialog>
-                <p>sssss</p>
-            </dialog>
-        </span>
     }
 }
 

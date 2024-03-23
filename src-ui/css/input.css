@@ -57,6 +57,12 @@
 }
 
 @layer base {
+  ::backdrop {
+    @apply opacity-70 bg-[#000];
+  }
+}
+
+@layer base {
   .input-group {
     @apply relative;
   }
