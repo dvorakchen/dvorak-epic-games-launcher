@@ -4,12 +4,13 @@ mod store;
 use friends_tab::Friends;
 pub use library::Library;
 pub use store::Store;
+use web_sys::MouseEvent;
 
 use crate::{
     components::*, server::signin_signout, storages::get_signed_in_user_info,
     utils::is_click_outside,
 };
-use leptos::*;
+use leptos::{html::Div, *};
 use leptos_router::*;
 
 const STORE_ROUTE_PATH: &'static str = "/homepage";
@@ -62,6 +63,11 @@ fn LeftNav() -> impl IntoView {
                     </span>
                 </li>
             </ul>
+
+            <div class="mt-8">
+                <QuickOperations/>
+            </div>
+
         </div>
     }
 }
@@ -86,6 +92,130 @@ fn LeftNavItem(link: &'static str, children: ChildrenFn, icon_type: IconTypes) -
             <span class="fill-inherit">{icon_type.into_view()}</span>
             {children()}
         </a>
+    }
+}
+
+#[component]
+fn QuickOperations() -> impl IntoView {
+    view! {
+        <div class="flex flex-col">
+            <h1 class="text-xs m-4">"QUICK OPERATION"</h1>
+            <ul class="space-y-1">
+                <li>
+                    <QuickGame/>
+                </li>
+                <li>
+                    <QuickGame/>
+                </li>
+            </ul>
+        </div>
+    }
+}
+
+#[component]
+fn QuickGame() -> impl IntoView {
+    let (launching, set_launching) = create_signal(false);
+    let (show_menu, set_show_menu) = create_signal(false);
+    let menu_node: NodeRef<Div> = create_node_ref();
+
+    let handle_quick_launch = move |_| {
+        set_launching(true);
+    };
+
+    let handle_context_menu = move |ev: MouseEvent| {
+        ev.prevent_default();
+        set_show_menu(true);
+        let left = ev.offset_x();
+        let top = ev.offset_y();
+        let menu = menu_node.get().unwrap();
+        _ = menu
+            .style("left", format!("{}px", left))
+            .style("top", format!("{}px", top));
+    };
+
+    let handle_click_menu = window_event_listener(ev::mouseup, move |_| {
+        set_show_menu(false);
+    });
+
+    on_cleanup(|| {
+        handle_click_menu.remove();
+    });
+
+    view! {
+        <div class="flex relative rounded-lg p-2 gap-4 cursor-pointer
+        hover:bg-base-200">
+            <span class="rounded-lg w-12 h-14 overflow-clip bg-cover
+            shrink-0
+            bg-[url('/assets/images/games/black-myth-wukong.jpg')]"></span>
+            <div class="flex items-center text-sm overflow-hidden">
+                <span class="whitespace-nowrap" class=("text-neutral", launching)>
+                    "Black Myth Wukong"
+                </span>
+            </div>
+
+            <div
+                class="absolute inset-0  flex flex-row-reverse
+                items-center px-2 z-10"
+                class=("hover:opacity-100", move || !launching())
+                class=("opacity-0", move || !launching())
+                on:contextmenu=handle_context_menu
+            >
+                {move || {
+                    if launching() {
+                        view! {
+                            <span class="animate-spin aspect-square w-6 fill-white
+                            mr-2 backdrop-blur-sm rounded-full flex items-center justify-center">
+                                <ArrowRepeat/>
+                            </span>
+                        }
+                            .into_view()
+                    } else {
+                        view! {
+                            <button
+                                class="flex justify-center items-center
+                                fill-white aspect-square w-8 border-2 border-primary rounded-lg
+                                backdrop-blur-sm"
+                                title="QUICK LAUNCH"
+                                on:click=handle_quick_launch
+                            >
+                                <Play/>
+                            </button>
+                        }
+                            .into_view()
+                    }
+                }}
+
+            </div>
+
+            <Show when=show_menu>
+                <div
+                    class="absolute z-50 bg-base-200 rounded shadow-2xl
+                    py-2"
+                    node_ref=menu_node
+                >
+                    <MenuItem on_click=move |_| {}>"Launch"</MenuItem>
+                    <div class="py-2 px-4 text-primary whitespace-nowrap cursor-pointer
+                    hover:bg-base-300">"Go To Store Page"</div>
+                </div>
+            </Show>
+        </div>
+    }
+}
+
+#[component]
+fn MenuItem(children: ChildrenFn, #[prop(into)] on_click: Callback<MouseEvent>) -> impl IntoView {
+    let handle_click = move |ev| {
+        on_click(ev);
+    };
+
+    view! {
+        <div
+            class="py-2 px-4 text-primary whitespace-nowrap cursor-pointer
+             hover:bg-base-300"
+            on:click=handle_click
+        >
+            {children()}
+        </div>
     }
 }
 
