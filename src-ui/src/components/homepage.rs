@@ -18,16 +18,18 @@ const STORE_ROUTE_PATH: &'static str = "/homepage";
 #[component]
 pub fn HomePage() -> impl IntoView {
     view! {
-        <div class="flex min-h-screen w-screen bg-base-100 pr-8">
+        <div class="flex h-screen w-screen bg-base-100 pr-8">
             <nav class="w-[18%]">
                 <LeftNav/>
             </nav>
 
-            <div class="flex flex-col grow p-2">
-                <div>
+            <div class="flex flex-col grow p-2 h-full overflow-y-hidden">
+                <div class="shrink-0">
                     <TopNav/>
                 </div>
-                <Outlet/>
+                <div class="grow shrink overflow-scroll scrollbar-w-none">
+                    <Outlet/>
+                </div>
             </div>
         </div>
     }
@@ -101,9 +103,6 @@ fn QuickOperations() -> impl IntoView {
         <div class="flex flex-col">
             <h1 class="text-xs m-4">"QUICK OPERATION"</h1>
             <ul class="space-y-1">
-                <li>
-                    <QuickGame/>
-                </li>
                 <li>
                     <QuickGame/>
                 </li>
@@ -194,8 +193,7 @@ fn QuickGame() -> impl IntoView {
                     node_ref=menu_node
                 >
                     <MenuItem on_click=move |_| {}>"Launch"</MenuItem>
-                    <div class="py-2 px-4 text-primary whitespace-nowrap cursor-pointer
-                    hover:bg-base-300">"Go To Store Page"</div>
+                    <MenuItem on_click=move |_| {}>"Go To Store Page"</MenuItem>
                 </div>
             </Show>
         </div>
@@ -211,7 +209,7 @@ fn MenuItem(children: ChildrenFn, #[prop(into)] on_click: Callback<MouseEvent>) 
     view! {
         <div
             class="py-2 px-4 text-primary whitespace-nowrap cursor-pointer
-             hover:bg-base-300"
+            hover:bg-base-300"
             on:click=handle_click
         >
             {children()}
