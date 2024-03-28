@@ -1,13 +1,19 @@
 mod friends_tab;
 mod library;
 mod store;
+mod store_detail;
+
 use friends_tab::Friends;
 pub use library::Library;
+use share::GameCover as GameCoverModel;
 pub use store::Store;
+pub use store_detail::StoreDetail;
 use web_sys::MouseEvent;
 
 use crate::{
-    components::*, server::signin_signout, storages::get_signed_in_user_info,
+    components::*,
+    server::{games, signin_signout},
+    storages::get_signed_in_user_info,
     utils::is_click_outside,
 };
 use leptos::{html::Div, *};
@@ -99,27 +105,37 @@ fn LeftNavItem(link: &'static str, children: ChildrenFn, icon_type: IconTypes) -
 
 #[component]
 fn QuickOperations() -> impl IntoView {
+    let installed_games =
+        create_resource(|| {}, |_| async move { games::get_installed_games().await });
+
     view! {
         <div class="flex flex-col">
             <h1 class="text-xs m-4">"QUICK OPERATION"</h1>
-            <ul class="space-y-1">
-                <li>
-                    <QuickGame/>
-                </li>
-            </ul>
+            <div class="space-y-1">
+                {
+                    move || match installed_games.get() {
+                        None => view! {}.into_view(),
+                        Some(games) => {
+                            games.into_iter().map(|game| {
+                                view! {<QuickGame model=game />}
+                            }).collect_view()
+                        }
+                    }
+                }
+            </div>
         </div>
     }
 }
 
 #[component]
-fn QuickGame() -> impl IntoView {
-    let (launching, set_launching) = create_signal(false);
+fn QuickGame(model: GameCoverModel) -> impl IntoView {
     let (show_menu, set_show_menu) = create_signal(false);
     let menu_node: NodeRef<Div> = create_node_ref();
 
-    let handle_quick_launch = move |_| {
-        set_launching(true);
-    };
+    let launch_action = create_action(|input: &String| {
+        let input = input.clone();
+        async move { games::launch_game(input).await }
+    });
 
     let handle_context_menu = move |ev: MouseEvent| {
         ev.prevent_default();
@@ -136,6 +152,10 @@ fn QuickGame() -> impl IntoView {
         set_show_menu(false);
     });
 
+    let handle_click = move |_| {
+        use_navigate()("/homepage/store/000", Default::default());
+    };
+
     on_cleanup(|| {
         handle_click_menu.remove();
     });
@@ -147,7 +167,7 @@ fn QuickGame() -> impl IntoView {
             shrink-0
             bg-[url('/assets/images/games/black-myth-wukong.jpg')]"></span>
             <div class="flex items-center text-sm overflow-hidden">
-                <span class="whitespace-nowrap" class=("text-neutral", launching)>
+                <span class="whitespace-nowrap" class=("text-neutral", launch_action.pending())>
                     "Black Myth Wukong"
                 </span>
             </div>
@@ -155,12 +175,13 @@ fn QuickGame() -> impl IntoView {
             <div
                 class="absolute inset-0  flex flex-row-reverse
                 items-center px-2 z-10"
-                class=("hover:opacity-100", move || !launching())
-                class=("opacity-0", move || !launching())
+                class=("hover:opacity-100", move || !launch_action.pending()())
+                class=("opacity-0", move || !launch_action.pending()())
                 on:contextmenu=handle_context_menu
+                on:click=handle_click
             >
                 {move || {
-                    if launching() {
+                    if launch_action.pending()() {
                         view! {
                             <span class="animate-spin aspect-square w-6 fill-white
                             mr-2 backdrop-blur-sm rounded-full flex items-center justify-center">
@@ -169,13 +190,16 @@ fn QuickGame() -> impl IntoView {
                         }
                             .into_view()
                     } else {
+                        let game_name = model.name.clone();
                         view! {
                             <button
                                 class="flex justify-center items-center
                                 fill-white aspect-square w-8 border-2 border-primary rounded-lg
                                 backdrop-blur-sm"
                                 title="QUICK LAUNCH"
-                                on:click=handle_quick_launch
+                                on:click=move |_| {
+                                    launch_action.dispatch(game_name.clone())   ;
+                                }
                             >
                                 <Play/>
                             </button>
@@ -347,7 +371,7 @@ fn StoreDaily() -> impl IntoView {
 
     let is_store_route = move || {
         let cur = location.pathname.get();
-        &cur == STORE_ROUTE_PATH
+        &cur == STORE_ROUTE_PATH || cur.starts_with("/homepage/store")
     };
 
     view! {

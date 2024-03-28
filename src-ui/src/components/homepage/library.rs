@@ -1,7 +1,10 @@
 use crate::components::*;
+use crate::server::games;
 use leptos::{html::Div, *};
 use leptos_router::{use_location, use_navigate, use_query_map};
+use share::GameCover as GameCoverModel;
 use web_sys::MouseEvent;
+use crate::utils::GAME_COVER_IMAGE_PATH;
 
 #[component]
 pub fn Library() -> impl IntoView {
@@ -101,12 +104,26 @@ fn Filter() -> impl IntoView {
 
 #[component]
 fn Games() -> impl IntoView {
+    let games = create_resource(|| {}, |_| async move { games::get_my_games().await });
+
     view! {
         <div class="flex w-full">
             <div class="w-4/5">
-                <div class="flex flex-wrap justify-between">
+                <div class="flex flex-wrap">
+                    <Suspense fallback=move || {
+                        (0..8).map(|_| view! { <GameOverSkelecton/> }).collect_view()
+                    }>
+                        {move || match games.get() {
+                            None => view! {}.into_view(),
+                            Some(games) => {
+                                games
+                                    .into_iter()
+                                    .map(|game_cover| view! { <GameCover model=game_cover/> })
+                                    .collect_view()
+                            }
+                        }}
 
-                    {move || { (0..8).map(|_| view! { <GameCover/> }).collect_view() }}
+                    </Suspense>
 
                 </div>
             </div>
@@ -116,17 +133,44 @@ fn Games() -> impl IntoView {
 }
 
 #[component]
-fn GameCover() -> impl IntoView {
+fn GameOverSkelecton() -> impl IntoView {
+    view! {
+        <span class="w-1/4 aspect-[9/16] rounded-lg p-4">
+            <div class="bg-base-200 opacity-50 w-full h-full
+            flex items-center justify-center">
+                <span class="fill-white">
+                    <Epic/>
+                </span>
+            </div>
+        </span>
+    }
+}
+
+#[component]
+fn GameCover(model: GameCoverModel) -> impl IntoView {
+    let cover_url = format!("{}{}", GAME_COVER_IMAGE_PATH, model.cover_url);
     let (show_menu, set_show_menu) = create_signal(false);
     let menu_node: NodeRef<Div> = create_node_ref();
 
+    let is_installed = {
+        let name = model.name.clone();
+        create_resource(
+            || {},
+            move |_| {
+                let name = name.clone();
+                async move {
+                    let name = name.clone();
+                    games::check_installed(name).await
+                }
+            },
+        )
+    };
+
     let handle_contextmenu = move |ev: MouseEvent| {
-        ev.prevent_default();
         ev.prevent_default();
         set_show_menu(true);
         let left = ev.offset_x();
         let top = ev.offset_y();
-        logging::log!("left: {} - top: {}", left, top);
         let menu = menu_node.get().unwrap();
         _ = menu
             .style("left", format!("{}px", left))
@@ -142,33 +186,53 @@ fn GameCover() -> impl IntoView {
     });
 
     view! {
-        <span
-            class="relative flex flex-col gap-2 w-1/4 aspect-[9/16] rounded-lg p-4
-            cursor-pointer
-            hover:bg-base-200"
-            on:contextmenu=handle_contextmenu
-        >
-            <div class="w-full h-2/3 rounded
-            bg-[url('/assets/images/games/black-myth-wukong.jpg')]
-            bg-cover bg-center
-            "></div>
+        <span class="relative flex flex-col gap-2 w-1/4 aspect-[9/16] rounded-lg p-4
+        cursor-pointer
+        hover:bg-base-200">
+            <div class=format!(
+                "w-full h-2/3 rounded
+            bg-[url('{}')] bg-cover bg-center",
+                cover_url,
+            )></div>
             <div class="flex flex-col gap-1">
                 <div class="flex items-center gap-4">
                     <span
                         class="grow shrink whitespace-nowrap overflow-hidden"
-                        title="Black Myth Wukong"
+                        title=model.name.clone()
                     >
-                        "Black Myth Wukong"
+                        {model.name.clone()}
                     </span>
                 </div>
-                <span class="text-neutral text-sm">"0/10 Achievements"</span>
+                <span class="text-neutral text-sm">
+                    {model.achievements_completed} "/" {model.achievements_amount} " Achievements"
+                </span>
                 <span class="text-sm">
                     <span class="flex gap-2 text-sm text-neutral fill-neutral">
                         <Download/>
-                        "Uninstall"
+
+                        {move || {
+                            match is_installed.get() {
+                                None => view! { "..." }.into_view(),
+                                Some(is_installed) => {
+                                    if is_installed {
+                                        view! { "Installed" }
+                                    } else {
+                                        view! { "Uninstalled" }
+                                    }
+                                        .into_view()
+                                }
+                            }
+                        }}
+
                     </span>
                 </span>
             </div>
+
+            <a
+                href="/homepage/store/000"
+                class="absolute inset-0"
+                on:contextmenu=handle_contextmenu
+            ></a>
 
             <Show when=show_menu>
                 <div

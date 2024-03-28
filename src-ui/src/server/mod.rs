@@ -1,4 +1,5 @@
 pub mod signin_signout;
+pub mod games;
 
 use crate::storages::get_signed_in_user_info;
 use signin_signout::*;

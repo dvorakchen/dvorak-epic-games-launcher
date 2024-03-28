@@ -11,6 +11,7 @@ pub fn App() -> impl IntoView {
                 <Route path="/sign_in" view=SignIn/>
                 <Route path="/homepage" view=HomePage>
                     <Route path="" view=Store/>
+                    <Route path="store/:id" view=StoreDetail/>
                     <Route path="library" view=Library/>
                 </Route>
             </Routes>

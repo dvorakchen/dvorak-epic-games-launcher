@@ -19,13 +19,14 @@ tauri-sys = { git = "https://github.com/JonasKruckenberg/tauri-sys", features = 
     "all",
 ] }
 futures = "0.3"
-gloo = { version = "0.11.0", features = ["timers", "futures", "storage"] }
 
+gloo = { workspace = true }
 email_address = { workspace = true }
 rand = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 chrono = { workspace = true }
+share = { workspace = true }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3"

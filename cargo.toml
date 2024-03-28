@@ -1,5 +1,5 @@
 [workspace]
-members = ["src-ui", "src-tauri"]
+members = ["src-ui", "src-tauri", "share"]
 
 [workspace.package]
 version = "0.0.1"
@@ -15,3 +15,5 @@ rand = "0.8.5"
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 chrono = { version = "0.4.35", features = ["serde"] }
+share = { path = "./share" }
+gloo = { version = "0.11.0", features = ["timers", "futures", "storage"] }

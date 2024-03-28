@@ -9,3 +9,5 @@ pub fn is_click_outside(x: f32, y: f32, container: HtmlElement<Div>) -> bool {
         false
     }
 }
+
+pub const GAME_COVER_IMAGE_PATH: &'static str = "/assets/images/games/";
