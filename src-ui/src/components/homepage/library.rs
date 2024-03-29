@@ -1,6 +1,6 @@
-use crate::{components::*, utils::Navigation};
 use crate::server::games;
 use crate::utils::GAME_COVER_IMAGE_PATH;
+use crate::{components::*, utils::Navigation};
 use leptos::{html::Div, *};
 use leptos_router::{use_location, use_navigate, use_query_map};
 use share::GameCover as GameCoverModel;
@@ -9,17 +9,28 @@ use web_sys::MouseEvent;
 #[component]
 pub fn Library() -> impl IntoView {
     view! {
-        <div class="flex flex-col p-4 pt-0 my-4 gap-4">
+        <div class="flex flex-col pt-0 my-4 gap-4">
             <div class="flex items-center gap-4 mb-4">
-                <h1 class="text-3xl">"Library"</h1>
+                <h1 class="text-3xl pl-4">"Library"</h1>
                 <span class="fill-neutral cursor-pointer">
                     <ArrowRepeat/>
                 </span>
             </div>
 
-            <Collections/>
-            <Filter/>
-            <Games/>
+            <div class="pl-4">
+                <Collections/>
+            </div>
+            <div class="flex w-full">
+                <div class="w-3/4">
+                    <div class="px-4 mb-2">
+                        <Sort/>
+                    </div>
+                    <Games/>
+                </div>
+                <div class="w-1/4 pl-4">
+                    <Filters/>
+                </div>
+            </div>
         </div>
     }
 }
@@ -61,7 +72,7 @@ fn Collections() -> impl IntoView {
 }
 
 #[component]
-fn Filter() -> impl IntoView {
+fn Sort() -> impl IntoView {
     let query = use_query_map();
     let is_layout = move |name: &'static str| {
         query.with(|q| match q.get("layout") {
@@ -107,27 +118,21 @@ fn Games() -> impl IntoView {
     let games = create_resource(|| {}, |_| async move { games::get_my_games().await });
 
     view! {
-        <div class="flex w-full">
-            <div class="w-4/5">
-                <div class="flex flex-wrap">
-                    <Suspense fallback=move || {
-                        (0..8).map(|_| view! { <GameOverSkelecton/> }).collect_view()
-                    }>
-                        {move || match games.get() {
-                            None => view! {}.into_view(),
-                            Some(games) => {
-                                games
-                                    .into_iter()
-                                    .map(|game_cover| view! { <GameCover model=game_cover/> })
-                                    .collect_view()
-                            }
-                        }}
+        <div class="flex flex-wrap">
+            <Suspense fallback=move || {
+                (0..8).map(|_| view! { <GameOverSkelecton/> }).collect_view()
+            }>
+                {move || match games.get() {
+                    None => view! {}.into_view(),
+                    Some(games) => {
+                        games
+                            .into_iter()
+                            .map(|game_cover| view! { <GameCover model=game_cover/> })
+                            .collect_view()
+                    }
+                }}
 
-                    </Suspense>
-
-                </div>
-            </div>
-            <div class="w-1/5">e</div>
+            </Suspense>
         </div>
     }
 }
@@ -272,6 +277,33 @@ fn MenuItem(children: ChildrenFn, #[prop(into)] on_click: Callback<MouseEvent>) 
             on:click=handle_click
         >
             {children()}
+        </div>
+    }
+}
+
+#[component]
+fn Filters() -> impl IntoView {
+    view! {
+        <div class="flexn flex-col">
+            <div class="h-8 flex items-center">
+                <span class="grow">"Filters"</span>
+                <span class="text-xs cursor-pointer">"RESET"</span>
+            </div>
+            <div class="flex flex-col pt-6">
+                <div class="relative flex rounded items-center gap-4 px-4 py-2 bg-base-200">
+                    <span class="fill-white aspect-square w-3">
+                        <Search/>
+                    </span>
+                    <input
+                        class="bg-transparent w-11/12 outline-none text-primary grow shrink text-sm"
+                        type="text"
+                        placeholder="Title"
+                    />
+                    <span class="fill-white cursor-pointer">
+                        <X/>
+                    </span>
+                </div>
+            </div>
         </div>
     }
 }

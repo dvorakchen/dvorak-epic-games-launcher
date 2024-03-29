@@ -245,3 +245,9 @@
     );
   }
 }
+
+@layer utilities {
+  .bg-transparent {
+    background-color: transparent;
+  }
+}
