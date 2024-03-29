@@ -14,7 +14,7 @@ use crate::{
     components::*,
     server::{games, signin_signout},
     storages::get_signed_in_user_info,
-    utils::is_click_outside,
+    utils::{is_click_outside, Navigation},
 };
 use leptos::{html::Div, *};
 use leptos_router::*;
@@ -23,6 +23,8 @@ const STORE_ROUTE_PATH: &'static str = "/homepage";
 
 #[component]
 pub fn HomePage() -> impl IntoView {
+    provide_context(Navigation::new());
+
     view! {
         <div class="flex h-screen w-screen bg-base-100 pr-8">
             <nav class="w-[18%]">
@@ -112,16 +114,19 @@ fn QuickOperations() -> impl IntoView {
         <div class="flex flex-col">
             <h1 class="text-xs m-4">"QUICK OPERATION"</h1>
             <div class="space-y-1">
-                {
-                    move || match installed_games.get() {
-                        None => view! {}.into_view(),
-                        Some(games) => {
-                            games.into_iter().map(|game| {
-                                view! {<QuickGame model=game />}
-                            }).collect_view()
-                        }
+
+                {move || match installed_games.get() {
+                    None => view! {}.into_view(),
+                    Some(games) => {
+                        games
+                            .into_iter()
+                            .map(|game| {
+                                view! { <QuickGame model=game/> }
+                            })
+                            .collect_view()
                     }
-                }
+                }}
+
             </div>
         </div>
     }
@@ -152,8 +157,13 @@ fn QuickGame(model: GameCoverModel) -> impl IntoView {
         set_show_menu(false);
     });
 
-    let handle_click = move |_| {
-        use_navigate()("/homepage/store/000", Default::default());
+    let handle_click = {
+        let id = model.id.clone();
+        let navigation =
+            use_context::<Navigation>().expect("had not provided context 'Navigation'");
+        move |_| {
+            navigation.to(format!("/homepage/store/{}", id));
+        }
     };
 
     on_cleanup(|| {
@@ -198,9 +208,10 @@ fn QuickGame(model: GameCoverModel) -> impl IntoView {
                                 backdrop-blur-sm"
                                 title="QUICK LAUNCH"
                                 on:click=move |_| {
-                                    launch_action.dispatch(game_name.clone())   ;
+                                    launch_action.dispatch(game_name.clone());
                                 }
                             >
+
                                 <Play/>
                             </button>
                         }
@@ -243,11 +254,34 @@ fn MenuItem(children: ChildrenFn, #[prop(into)] on_click: Callback<MouseEvent>) 
 
 #[component]
 fn TopNav() -> impl IntoView {
+    let handle_back = {
+        let mut navigation =
+            use_context::<Navigation>().expect("had not provided context 'Navigation'");
+        move |_| {
+            if navigation.is_empty.get() {
+                return;
+            }
+            navigation.back();
+        }
+    };
+
+    let is_navigation_empty = {
+        let navigation =
+            use_context::<Navigation>().expect("had not provided context 'Navigation'");
+        move || navigation.is_empty.get()
+    };
+
     view! {
         <div class="flex shrink-0 py-6">
             <div class="flex items-center px-2">
                 <span class="fill-neutral px-2">
-                    <ChevronLeft/>
+                    <span
+                        class=("cursor-pointer", move || !is_navigation_empty())
+                        class=("fill-white", move || !is_navigation_empty())
+                        on:click=handle_back
+                    >
+                        <ChevronLeft/>
+                    </span>
                 </span>
                 <Search/>
             </div>

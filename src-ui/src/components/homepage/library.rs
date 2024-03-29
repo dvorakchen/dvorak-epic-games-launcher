@@ -1,10 +1,10 @@
-use crate::components::*;
+use crate::{components::*, utils::Navigation};
 use crate::server::games;
+use crate::utils::GAME_COVER_IMAGE_PATH;
 use leptos::{html::Div, *};
 use leptos_router::{use_location, use_navigate, use_query_map};
 use share::GameCover as GameCoverModel;
 use web_sys::MouseEvent;
-use crate::utils::GAME_COVER_IMAGE_PATH;
 
 #[component]
 pub fn Library() -> impl IntoView {
@@ -72,7 +72,7 @@ fn Filter() -> impl IntoView {
     };
 
     view! {
-        <div class="flex items-center gap-4 sticky top-0 bg-base-100">
+        <div class="flex items-center gap-4 sticky z-30 top-0 bg-base-100">
             <span class="text-neutral">"Sort by:"</span>
             <span class="text-primary">"Recently Played"</span>
             <span class="grow shrink"></span>
@@ -166,6 +166,15 @@ fn GameCover(model: GameCoverModel) -> impl IntoView {
         )
     };
 
+    let handle_click = {
+        let id = model.id.clone();
+        let navigation =
+            use_context::<Navigation>().expect("had not provided context 'Navigation'");
+        move |_| {
+            navigation.to(format!("/homepage/store/{}", id));
+        }
+    };
+
     let handle_contextmenu = move |ev: MouseEvent| {
         ev.prevent_default();
         set_show_menu(true);
@@ -228,11 +237,11 @@ fn GameCover(model: GameCoverModel) -> impl IntoView {
                 </span>
             </div>
 
-            <a
-                href="/homepage/store/000"
+            <span
                 class="absolute inset-0"
                 on:contextmenu=handle_contextmenu
-            ></a>
+                on:click=handle_click
+            ></span>
 
             <Show when=show_menu>
                 <div
