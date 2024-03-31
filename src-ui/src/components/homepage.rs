@@ -27,7 +27,7 @@ pub fn HomePage() -> impl IntoView {
 
     view! {
         <div class="flex h-screen w-screen bg-base-100 pr-8">
-            <nav class="w-[18%]">
+            <nav class="w-[18%] min-w-[18%] max-w-[18%]">
                 <LeftNav/>
             </nav>
 

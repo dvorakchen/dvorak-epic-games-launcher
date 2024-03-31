@@ -251,3 +251,18 @@
     background-color: transparent;
   }
 }
+
+@layer base {
+  .showcase {
+    @apply overflow-hidden;
+  }
+
+  .showcase span {
+    @apply flex items-center justify-center duration-200
+    opacity-0;
+  }
+
+  .showcase:hover span {
+    @apply translate-x-0 opacity-100;
+  }
+}

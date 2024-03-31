@@ -15,6 +15,9 @@ module.exports = {
       "base-content": "#fff",
     },
     extend: {
+      colors: {
+        transparent: "rgba(255, 255, 255, 0)",
+      },
       ringWidth: {
         10: "10px",
       },
