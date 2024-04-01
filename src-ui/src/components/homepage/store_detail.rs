@@ -47,7 +47,14 @@ fn Detail() -> impl IntoView {
                 </div>
             </nav>
 
-            <Showcase />
+            <div class="my-4">
+                <Showcase/>
+            </div>
+
+            <div class="my-4">
+                <Introduction/>
+            </div>
+
         </div>
     }
 }
@@ -56,41 +63,84 @@ fn Detail() -> impl IntoView {
 fn Showcase() -> impl IntoView {
     view! {
         <div class="flex flex-col gap-4">
-        <div class="relative w-full aspect-[16/9] showcase">
-            <img
-                class="w-full h-full pointer-events-none select-none"
-                src="/assets/images/games/black-myth-wukong-yrpgs-1920x1080.png"
-                alt="black myth wukong"
-            />
-            <span class="absolute top-0 bottom-0 left-0 w-16 bg-gradient-to-r from-base-100/50 to-transparent
-            -translate-x-16">
-                <span class="fill-white w-8 cursor-pointer">
-                    <ChevronLeft/>
+            <div class="relative w-full aspect-[16/9] showcase">
+                <img
+                    class="w-full h-full pointer-events-none select-none"
+                    src="/assets/images/games/black-myth-wukong-yrpgs-1920x1080.png"
+                    alt="black myth wukong"
+                />
+                <span class="absolute top-0 bottom-0 left-0 w-16 bg-gradient-to-r from-base-100/50 to-transparent
+                -translate-x-16">
+                    <span class="fill-white w-8 cursor-pointer">
+                        <ChevronLeft/>
+                    </span>
                 </span>
-            </span>
-            <span class="absolute top-0 bottom-0 right-0 w-16 bg-gradient-to-l from-base-100/50 to-transparent
-            translate-x-16">
-                <span class="fill-white w-8 cursor-pointer">
-                    <ChevronRight/>
+                <span class="absolute top-0 bottom-0 right-0 w-16 bg-gradient-to-l from-base-100/50 to-transparent
+                translate-x-16">
+                    <span class="fill-white w-8 cursor-pointer">
+                        <ChevronRight/>
+                    </span>
                 </span>
-            </span>
-        </div>
-        <div class="flex items-center gap-1">
-            <span class="flex shrink-0 w-10 rounded-full aspect-square bg-base-300">
-                <span class="fill-white m-auto">
-                    <ChevronLeft/>
-                </span>
-            </span>
-            <div class="grow shrink">
-
             </div>
-            <span class="flex shrink-0 w-10 rounded-full aspect-square bg-base-300">
-                <span class="fill-white m-auto">
-                    <ChevronRight/>
+            <div class="flex items-center gap-2">
+                <span class="flex shrink-0 w-10 rounded-full aspect-square bg-base-300">
+                    <span class="fill-white m-auto">
+                        <ChevronLeft/>
+                    </span>
                 </span>
-            </span>
+                <div class="flex grow shrink gap-4 overflow-clip">
+                    <div class="aspect-[16/9] bg-base-100 rounded w-1/6 overflow-clip
+                    cursor-pointer border border-primary">
+                        <img
+                            class="w-full h-full"
+                            src="/assets/images/games/black-myth-wukong-yrpgs-480x270.png"
+                            alt=""
+                        />
+                    </div>
+                </div>
+                <span class="flex shrink-0 w-10 rounded-full aspect-square bg-base-300">
+                    <span class="fill-white m-auto">
+                        <ChevronRight/>
+                    </span>
+                </span>
+            </div>
         </div>
-    </div>
+    }
+}
+
+#[component]
+fn Introduction() -> impl IntoView {
+    view! {
+        <div class="flex flex-col gap-8">
+            <p class="text-lg">
+                "Black Myth: Wukong is an action RPG rooted in Chinese mythology. You shall set out as the Destined One to venture into the challenges and marvels ahead, to uncover the obscured truth beneath the veil of a glorious legend from the past."
+            </p>
+
+            // Genres & Features
+            <div class="flex h-12">
+                <div class="grow h-full border-l border-l-neutral/80 px-8">
+                    <div class="text-neutral">"Genres"</div>
+                    <div class="flex gap-4 text-sm">
+                        <a class="underline" href="">"Action-Adventure"</a>
+                        <a class="underline" href="">"RPG"</a>
+                    </div>
+                </div>
+                <div class="grow h-full border-l border-l-neutral/80 px-8">
+                    <div class="text-neutral">"Features"</div>
+                    <div class="flex gap-4 text-sm">
+                        <a class="underline" href="">"Controller- Support"</a>
+                        <a class="underline" href="">"Single Player"</a>
+                    </div>
+                </div>
+            </div>
+
+            // Dedail
+            <article class="text-sm space-y-4">
+                <p class="text-neutral">"Black Myth: Wukong is an action RPG rooted in Chinese mythology. The story is based on Journey to the West, one of the Four Great Classical Novels of Chinese literature. You shall set out as the Destined One to venture into the challenges and marvels ahead, to uncover the obscured truth beneath the veil of a glorious legend from the past."</p>
+                <img src="black-myth-wukong-15gfy.png" alt="" />
+
+            </article>
+        </div>
     }
 }
 
