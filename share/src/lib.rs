@@ -20,3 +20,18 @@ impl Default for GameCover {
         }
     }
 }
+
+#[derive(Debug, Copy, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub enum ReviewType {
+    ThumbsUp,
+    ThumbsDown,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Review {
+    pub id: String,
+    pub username: String,
+    pub review_type: ReviewType,
+    pub content: String,
+    pub datetime: String,
+}

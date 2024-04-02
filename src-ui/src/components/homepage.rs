@@ -26,16 +26,16 @@ pub fn HomePage() -> impl IntoView {
     provide_context(Navigation::new());
 
     view! {
-        <div class="flex h-screen w-screen bg-base-100 pr-8">
+        <div class="flex h-screen w-screen bg-base-100">
             <nav class="w-[18%] min-w-[18%] max-w-[18%]">
                 <LeftNav/>
             </nav>
 
-            <div class="flex flex-col grow p-2 h-full overflow-y-hidden">
-                <div class="shrink-0">
+            <div class="flex flex-col grow p-2 pr-0 h-full overflow-y-hidden">
+                <div class="shrink-0 pr-8">
                     <TopNav/>
                 </div>
-                <div class="grow shrink overflow-scroll scrollbar-w-none">
+                <div class="grow shrink overflow-scroll scrollbar-w-thin overflow-x-hidden">
                     <Outlet/>
                 </div>
             </div>
