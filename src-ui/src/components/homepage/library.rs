@@ -9,25 +9,24 @@ use web_sys::MouseEvent;
 #[component]
 pub fn Library() -> impl IntoView {
     view! {
-        <div class="flex flex-col pt-0 my-4 gap-4">
+        <div class="flex flex-col pt-0 my-4 px-4 gap-4">
             <div class="flex items-center gap-4 mb-4">
-                <h1 class="text-3xl pl-4">"Library"</h1>
+                <h1 class="text-3xl">"Library"</h1>
                 <span class="fill-neutral cursor-pointer">
                     <ArrowRepeat/>
                 </span>
             </div>
 
-            <div class="pl-4">
-                <Collections/>
-            </div>
-            <div class="flex w-full">
+            <Collections/>
+
+            <div class="flex w-full gap-4">
                 <div class="w-3/4">
-                    <div class="px-4 mb-2">
+                    <div class="mb-2">
                         <Sort/>
                     </div>
                     <Games/>
                 </div>
-                <div class="w-1/4 pl-4">
+                <div class="w-1/4">
                     <Filters/>
                 </div>
             </div>

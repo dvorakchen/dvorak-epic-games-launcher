@@ -26,6 +26,7 @@ pub fn StoreDetail() -> impl IntoView {
 fn Detail() -> impl IntoView {
     view! {
         <div class="flex flex-col py-6 w-full">
+            <div class="relative" id="overview"></div>
             <div class="flex flex-col gap-3 mb-8">
                 <h1 class="text-primary text-4xl">"Black Myth: Wukong"</h1>
                 <div class="flex items-center gap-2 flex-wrap">
@@ -65,6 +66,14 @@ fn Detail() -> impl IntoView {
 
 #[component]
 fn Nav() -> impl IntoView {
+    let handle_overview = move |_| {
+        let overview = document()
+            .get_element_by_id("overview")
+            .expect("cannot found overview");
+
+        overview.scroll_into_view();
+    };
+
     let handle_achievements = move |_| {
         let achievements = document()
             .get_element_by_id("avaliable_achievements")
@@ -84,7 +93,10 @@ fn Nav() -> impl IntoView {
     view! {
         <nav class="sticky z-50 top-0 pb-8 bg-base-100">
             <div class="flex gap-8">
-                <span class="cursor-pointer text-primary text-xl border-b-2 border-b-primary pb-1">
+                <span
+                    class="cursor-pointer text-primary text-xl border-b-2 border-b-primary pb-1"
+                    on:click=handle_overview
+                >
                     "Overview"
                 </span>
 
@@ -260,9 +272,8 @@ fn Introduction() -> impl IntoView {
 fn AvaliableAchievements() -> impl IntoView {
     view! {
         <div class="flex flex-col gap-4">
-            <h1 id="avaliable_achievements" class="text-primary text-lg">
-                "Available Achievements"
-            </h1>
+            <div id="avaliable_achievements" class="relative -top-24"></div>
+            <h1 class="text-primary text-lg">"Available Achievements"</h1>
             <div class="flex gap-2 flex-wrap">
 
                 {move || {
@@ -390,6 +401,7 @@ fn EpicPlayerRatings() -> impl IntoView {
 
     view! {
         <div class="flex flex-col gap-4">
+            <div class="relative -top-24" id="ratings"></div>
             <h1 class="text-lg text-primary">"MOST HELPFUL REVIEWS"</h1>
 
             <Suspense fallback=move || {
@@ -463,7 +475,7 @@ fn Review(model: ReviewModel) -> impl IntoView {
                 </div>
             </div>
             <div class="my-4">
-                <p class="whitespace-break-spaces">{model.content}</p>
+                <p class="whitespace-break-spaces select-text">{model.content}</p>
             </div>
         </div>
     }
