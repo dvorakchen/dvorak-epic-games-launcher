@@ -18,7 +18,7 @@ pub async fn init_connect_and_sign_in() -> InitStatus {
     //  1. try connect to server
     //  2. try get user information from local
     let info = get_signed_in_user_info();
-    if info.is_some() {
+    if info.is_none() {
         return InitStatus::SignedOut;
     }
     //  3. try validate sign in status with user
