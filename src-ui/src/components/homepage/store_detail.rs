@@ -16,7 +16,9 @@ pub fn StoreDetail() -> impl IntoView {
                 <Detail/>
             </div>
             <div class="w-1/3">
-                <Operations/>
+                <div class="mt-[13.5rem]">
+                    <Operations/>
+                </div>
             </div>
         </div>
     }
@@ -483,5 +485,71 @@ fn Review(model: ReviewModel) -> impl IntoView {
 
 #[component]
 fn Operations() -> impl IntoView {
-    view! {}
+    view! {
+        <div class="flex flex-col gap-2 px-10">
+            <div class="h-36 flex justify-center">
+                <img class="h-full" src="/assets/images/games/Wukong-logo.png" alt="Wukong logo"/>
+            </div>
+            <div class="flex gap-4 p-4 w-fit rounded border border-neutral/50">
+                <span class="aspect-square w-12 h-12">
+                    <img
+                        class="w-full h-full"
+                        src="/assets/images/Generic_16.png"
+                        alt="Generic_16"
+                    />
+                </span>
+                <div class="flex flex-col justify-between">
+                    <span class="text-primary text-sm font-bold">"Mature 17+"</span>
+                    <span class="text-neutral text-sm">"Blood, Violence"</span>
+                </div>
+            </div>
+            <span class="w-fit px-1 py-0.5 text-xs bg-base-300 text-neutral rounded">
+                "BASE GAME"
+            </span>
+            <Button class="w-full bg-transparent py-4 border border-neutral" disabled=true>
+                "COMING SOON"
+            </Button>
+            <Button class="w-full bg-transparent border border-neutral text-primary text-xs">
+                <span class="w-4 fill-white mr-2">
+                    <PlusCircle/>
+                </span>
+                "ADD TO WISHLIST"
+            </Button>
+            <div class="flex flex-col">
+                <div class="text-sm flex justify-between py-3 border-b border-b-neutral">
+                    <span class="text-neutral">"Developer"</span>
+                    <span class="text-primary">"Game Science"</span>
+                </div>
+                <div class="text-sm flex justify-between py-3 border-b border-b-neutral">
+                    <span class="text-neutral">"Publisher"</span>
+                    <span class="text-primary">"Game Science"</span>
+                </div>
+                <div class="text-sm flex justify-between py-3 border-b border-b-neutral">
+                    <span class="text-neutral">"Available"</span>
+                    <span class="text-primary">"2024/08/24"</span>
+                </div>
+                <div class="text-sm flex justify-between py-3 border-b border-b-neutral">
+                    <span class="text-neutral">"Platform"</span>
+                    <span class="fill-white w-4">
+                        <Windows/>
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex justify-between gap-2 mt-4">
+                <Button class="w-full font-normal text-sm">
+                    <span class="fill-white w-4 mr-2">
+                        <Share/>
+                    </span>
+                    "SHARE"
+                </Button>
+                <Button class="w-full font-normal text-sm">
+                    <span class="fill-white w-4 mr-2">
+                        <Report/>
+                    </span>
+                    "REPORT"
+                </Button>
+            </div>
+        </div>
+    }
 }
