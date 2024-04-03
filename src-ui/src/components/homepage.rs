@@ -347,7 +347,7 @@ fn Profile() -> impl IntoView {
             </button>
             <span class="absolute right-0 bottom-0 w-2 h-2 rounded-full bg-[green]"></span>
             <Show when=show_dropdown>
-                <div class="absolute top-[120%] right-0 w-80 p-4 bg-base-200 leading-9 rounded">
+                <div class="absolute z-[100] top-[120%] right-0 w-80 p-4 bg-base-200 leading-9 rounded">
                     <section class="pt-2">
                         <h1 class="font-bold text-lg">{user_info.username.clone()}</h1>
                         <ProfileItem>"My Achievements"</ProfileItem>

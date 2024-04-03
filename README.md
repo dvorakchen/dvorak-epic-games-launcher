@@ -2,6 +2,8 @@
 
 **Not Completed Yet**
 
+**NOT FOR ILLEGAL USE**
+
 I try to make a Epic Games Launcher that has better experience
 
 build by Rust, Leptos, Tauri, Tailwindcss
@@ -38,6 +40,10 @@ npm install --global --save-exact esbuild
 run `npm i` at directory './src-ui',
 
 then run `cargo tauri dev` at root directory
+
+## Demonstration
+
+- [Bilibili](https://www.bilibili.com/video/BV1pr421t7kA)
 
 # License
 
