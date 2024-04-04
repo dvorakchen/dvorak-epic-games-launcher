@@ -44,6 +44,7 @@ then run `cargo tauri dev` at root directory
 ## Demonstration
 
 - [Bilibili](https://www.bilibili.com/video/BV1pr421t7kA)
+- [Youtube](https://youtu.be/I7lbnTBLCnU)
 
 # License
 
