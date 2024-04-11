@@ -46,6 +46,9 @@ then run `cargo tauri dev` at root directory
 - [Bilibili](https://www.bilibili.com/video/BV1pr421t7kA)
 - [Youtube](https://youtu.be/I7lbnTBLCnU)
 
+
+[Demonstration](https://github.com/dvorakchen/dvorak-epic-games-launcher/tree/main/docs/epic-games-launcher.webp)
+
 # License
 
 MIT
