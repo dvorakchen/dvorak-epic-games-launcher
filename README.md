@@ -47,7 +47,7 @@ then run `cargo tauri dev` at root directory
 - [Youtube](https://youtu.be/I7lbnTBLCnU)
 
 
-[Demonstration](https://github.com/dvorakchen/dvorak-epic-games-launcher/tree/main/docs/epic-games-launcher.webp)
+![Demonstration](https://raw.githubusercontent.com/dvorakchen/dvorak-epic-games-launcher/main/docs/epic-games-launcher.webp)
 
 # License
 
