@@ -1,5 +1,6 @@
 [workspace]
-members = ["src-ui", "src-tauri", "share"]
+members = ["src-ui", "src-tauri", "share", "backend"]
+exclude = []
 
 [workspace.package]
 version = "0.0.1"
@@ -8,6 +9,7 @@ authors = ["Dvorak Chen"]
 repository = "https://github.com/dvorakchen/dvorak-epic-games-launcher"
 dependencies = "A better Epic Games Launcher"
 license = "MIT"
+
 
 [workspace.dependencies]
 email_address = "0.2.4"

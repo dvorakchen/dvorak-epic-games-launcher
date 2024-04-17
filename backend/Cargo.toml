@@ -1,0 +1,18 @@
+[package]
+name = "backend"
+version = "0.0.1"
+edition = "2021"
+authors = ["Dvorak Chen"]
+repository = "https://github.com/dvorakchen/dvorak-epic-games-launcher"
+dependencies = "A better Epic Games Launcher"
+license = "MIT"
+
+[dependencies]
+diesel = { version = "2.1.5", features = ["sqlite", "serde_json", "r2d2"] }
+share = { path = "../share" }
+log = "*"
+env_logger = "0.11.3"
+r2d2 = "0.8.10"
+actix-cors = "0.7.0"
+dotenv = "0.15.0"
+actix-web = "4.5.1"

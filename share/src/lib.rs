@@ -35,3 +35,10 @@ pub struct Review {
     pub content: String,
     pub datetime: String,
 }
+
+#[derive(Serialize, Deserialize, Clone)]
+pub struct ServerResponse<T> {
+    ok: bool,
+    error: String,
+    content: T,
+}
