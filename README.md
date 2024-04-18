@@ -17,7 +17,7 @@ build by Rust, Leptos, Tauri, Tailwindcss
 
 ```bash
 # Tauri CLI
-cargo install --locked tauri-cli
+cargo install tauri-cli
 
 # Rust nightly (required by Leptos)
 rustup toolchain install nightly --allow-downgrade
@@ -26,10 +26,10 @@ rustup toolchain install nightly --allow-downgrade
 rustup target add wasm32-unknown-unknown
 
 # Trunk WASM bundler
-cargo install --locked trunk
+cargo install trunk
 
 # `wasm-bindgen` for Apple M1 chips (required by Trunk)
-cargo install --locked wasm-bindgen-cli
+cargo install wasm-bindgen-cli
 
 # `esbuild` as dependency of `tauri-sys` crate (used in UI)
 npm install --global --save-exact esbuild
