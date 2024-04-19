@@ -1,3 +1,6 @@
+mod accounts;
+pub use accounts::SignedInResponse;
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -38,7 +41,29 @@ pub struct Review {
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct ServerResponse<T> {
-    ok: bool,
-    error: String,
-    content: T,
+    pub ok: bool,
+    pub error: String,
+    pub content: Option<T>,
+}
+
+impl<T> ServerResponse<T> {
+    /// representing the result of response is successed, 
+    /// may with the response content
+    pub fn ok(content: T) -> Self {
+        ServerResponse {
+            ok: true,
+            error: "".to_string(),
+            content: Some(content),
+        }
+    }
+
+    /// representing the result of response is failed, 
+    /// with not the response content
+    pub fn error(error: impl AsRef<str>) -> Self {
+        ServerResponse {
+            ok: false,
+            error: error.as_ref().to_string(),
+            content: None,
+        }
+    }
 }

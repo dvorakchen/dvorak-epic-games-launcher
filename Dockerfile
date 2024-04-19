@@ -2,17 +2,27 @@ ARG RUST_VERSION=1.77
 ARG APP_NAME=backend
 
 FROM rust:${RUST_VERSION}-slim-bullseye AS build
+LABEL author="dvorak"
+LABEL email="dvorakchen@outlook.com"
+
 ARG APP_NAME
 
 WORKDIR /app
 
+COPY ./backend/Cargo.toml ./backend/Cargo.toml
+RUN mkdir ./backend/src
+RUN echo "fn main() {}" > ./backend/src/main.rs
+COPY ./share/Cargo.toml ./share/Cargo.toml
+RUN mkdir ./share/src
+RUN echo "" > ./share/src/lib.rs
+
+RUN cargo build --release --manifest-path ./backend/Cargo.toml
+
+RUN rm ./backend -rf
+RUN rm ./share -rf
+
 COPY ./backend ./backend
 COPY ./share ./share
-
-# WORKDIR /app/backend
-
-RUN --mount=type=cache,target=/usr/local/cargo/registry/ \
-    --mount=type=cache,target=/app/backend/target/
 
 RUN cargo build --release --manifest-path ./backend/Cargo.toml
 
@@ -30,7 +40,10 @@ RUN adduser \
 USER appuser
 
 COPY --from=build /app/backend/target/release/backend /bin/server
+COPY --from=build /app/backend/epic.db /bin/epic.db
 
 EXPOSE 8080
 
-CMD ["/bin/server"]
+WORKDIR /bin
+
+CMD ["server"]

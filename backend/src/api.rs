@@ -1,8 +1,12 @@
-mod account;
+mod accounts;
 
-use account::{check_account, index};
+use accounts::{is_account_exist, sign_in};
 use actix_web::web;
 
 pub fn init_api(cfg: &mut web::ServiceConfig) {
-    cfg.service((check_account, index));
+    cfg.service(web::scope("accounts")
+        .service((
+            is_account_exist, 
+            sign_in
+        )));
 }

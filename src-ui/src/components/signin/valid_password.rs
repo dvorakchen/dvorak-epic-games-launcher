@@ -159,7 +159,7 @@ fn PasswordInput() -> impl IntoView {
                 <Input
                     input_type="password"
                     node_ref=password_input
-                    label="Password DEBUG:123123"
+                    label="Password: 123123"
                     required=true
                     invalid_message="Required"
                     on_change=handle_input_change

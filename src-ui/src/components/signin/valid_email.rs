@@ -60,12 +60,16 @@ fn EmailInput() -> impl IntoView {
     };
 
     let valid_email_action = create_action(|input: &String| {
-        let _input = input.clone();
+        let input = input.clone();
         async move {
-            use gloo::timers::future::TimeoutFuture;
+            use crate::server::signin_signout::check_account_exist;
 
-            TimeoutFuture::new(1_000).await;
-            true
+            let res = check_account_exist(input).await;
+            if res.is_ok() {
+                true
+            } else {
+                false
+            }
         }
     });
 
@@ -105,7 +109,7 @@ fn EmailInput() -> impl IntoView {
                 on_change=handle_email_change
                 input_type="email"
                 required=true
-                label="Email Address"
+                label="Email Address: fake@email.com"
                 invalid_message="Please input correct Email"
             />
 

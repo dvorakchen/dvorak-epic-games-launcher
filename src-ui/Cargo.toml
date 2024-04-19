@@ -4,7 +4,7 @@ version.workspace = true
 edition.workspace = true
 authors.workspace = true
 repository.workspace = true
-dependencies.workspace = true
+description.workspace = true
 license.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -27,6 +27,7 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 chrono = { workspace = true }
 share = { workspace = true }
+reqwest = { version = "0.12.3", features = ["json"] }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3"

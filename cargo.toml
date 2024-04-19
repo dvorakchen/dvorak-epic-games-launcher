@@ -7,7 +7,7 @@ version = "0.0.1"
 edition = "2021"
 authors = ["Dvorak Chen"]
 repository = "https://github.com/dvorakchen/dvorak-epic-games-launcher"
-dependencies = "A better Epic Games Launcher"
+description = "A better Epic Games Launcher"
 license = "MIT"
 
 

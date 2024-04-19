@@ -4,16 +4,21 @@ mod models;
 mod schema;
 
 use actix_cors::Cors;
-use actix_web::{middleware, web::Data, App, HttpServer};
+use actix_web::{middleware, web::{self, Data}, App, HttpServer};
 use dotenv::dotenv;
+use log::info;
+use std::env;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    env_logger::init();
     dotenv().ok();
+    env_logger::init();
 
-    let listen_address = "127.0.0.1:8080".to_string();
-    println!("Listening at {}", listen_address);
+    let url = env::var("DATABASE_URL");
+    info!("DATABASE_URL: {:?}", url);
+
+    let listen_address = "0.0.0.0:8080".to_string();
+    info!("Listening at: {}", listen_address);
 
     HttpServer::new(|| {
         let cors = Cors::default()
@@ -23,7 +28,8 @@ async fn main() -> std::io::Result<()> {
 
         App::new()
             .wrap(cors)
-            .configure(api::init_api)
+            .service(web::scope("/api").configure(api::init_api))
+            // .configure(api::init_api)
             .app_data(Data::new(db::get_connection_pool()))
             .wrap(middleware::Logger::default())
     })

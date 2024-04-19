@@ -1,8 +1,18 @@
-pub mod signin_signout;
 pub mod games;
+pub mod signin_signout;
 
 use crate::storages::get_signed_in_user_info;
 use signin_signout::*;
+
+const SERVER_ADDRESS: &str = "http://127.0.0.1:8080";
+
+/// server address combine with path,
+///
+/// # argument:
+/// path: the route, without '/api/'
+fn get_url(path: impl AsRef<str>) -> String {
+    format!("{}/api/{}", SERVER_ADDRESS, path.as_ref())
+}
 
 pub enum InitStatus {
     // ConnectFail,
