@@ -1,6 +1,7 @@
 [workspace]
 members = ["src-ui", "src-tauri", "share", "backend"]
 exclude = []
+resolver = "2"
 
 [workspace.package]
 version = "0.0.1"
