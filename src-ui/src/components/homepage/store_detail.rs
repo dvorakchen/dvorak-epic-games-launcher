@@ -115,7 +115,7 @@ fn Nav() -> impl IntoView {
                     hover:border-b-2 border-b-neutral"
                     on:click=handle_ratings
                 >
-                    "Ratings"
+                    "Reviews"
                 </span>
             </div>
         </nav>
