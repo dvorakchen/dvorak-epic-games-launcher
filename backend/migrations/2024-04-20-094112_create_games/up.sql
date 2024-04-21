@@ -15,7 +15,7 @@ CREATE TABLE
         release_date text not null default '',
         -- sparated by ';', e.g WINDOWS;MAC
         platform text not null default '',
-        create_date_time text not null default (datetime('now', 'localtime', 'utc'))
+        create_date_time text not null default (datetime ('now', 'localtime', 'utc'))
     );
 
 CREATE TABLE
@@ -30,9 +30,9 @@ CREATE TABLE
 
 CREATE TABLE
     rel_game_target (
-        id integer primary key not null unique,
-        games_key integer REFERENCES games (id),
-        target_key integer REFERENCES targets (id)
+        game_id integer not null REFERENCES games (id),
+        target_id integer not null REFERENCES targets (id),
+        PRIMARY KEY (game_id, target_id)
     );
 
 CREATE TABLE
@@ -43,22 +43,16 @@ CREATE TABLE
         title text not null default '',
         summary text not null default '',
         ex integer not null default 0,
-        unlocks integer not null default 0,
         -- is hidden, TRUE or FALSE
         hidden text not null default 'FALSE',
-        sort integer not null default 0
-    );
-
-CREATE TABLE
-    rel_game_achievement (
-        id integer primary key not null unique,
-        games_key integer REFERENCES games (id),
-        achievement_key integer REFERENCES achievements (id)
+        sort integer not null default 0,
+        game_id integer not null REFERENCES games (id)
     );
 
 CREATE TABLE
     rel_account_game (
-        id integer primary key not null unique,
-        accounts_key integer REFERENCES accounts (id),
-        games_key integer REFERENCES games (id)
+        account_id integer not null REFERENCES accounts (id),
+        game_id integer not null REFERENCES games (id),
+        unlock_achievement_count integer not null default 0,
+        PRIMARY KEY (account_id, game_id)
     );

@@ -4,7 +4,11 @@ mod models;
 mod schema;
 
 use actix_cors::Cors;
-use actix_web::{middleware, web::{self, Data}, App, HttpServer};
+use actix_web::{
+    middleware,
+    web::{self, Data},
+    App, HttpServer,
+};
 use dotenv::dotenv;
 use log::info;
 use std::env;

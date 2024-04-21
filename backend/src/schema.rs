@@ -17,9 +17,9 @@ diesel::table! {
         title -> Text,
         summary -> Text,
         ex -> Integer,
-        unlocks -> Integer,
         hidden -> Text,
         sort -> Integer,
+        game_id -> Integer,
     }
 }
 
@@ -42,26 +42,17 @@ diesel::table! {
 }
 
 diesel::table! {
-    rel_account_game (id) {
-        id -> Integer,
-        accounts_key -> Nullable<Integer>,
-        games_key -> Nullable<Integer>,
+    rel_account_game (account_id, game_id) {
+        account_id -> Integer,
+        game_id -> Integer,
+        unlock_achievement_count -> Integer,
     }
 }
 
 diesel::table! {
-    rel_game_achievement (id) {
-        id -> Integer,
-        games_key -> Nullable<Integer>,
-        achievement_key -> Nullable<Integer>,
-    }
-}
-
-diesel::table! {
-    rel_game_target (id) {
-        id -> Integer,
-        games_key -> Nullable<Integer>,
-        target_key -> Nullable<Integer>,
+    rel_game_target (game_id, target_id) {
+        game_id -> Integer,
+        target_id -> Integer,
     }
 }
 
@@ -76,19 +67,17 @@ diesel::table! {
     }
 }
 
-diesel::joinable!(rel_account_game -> accounts (accounts_key));
-diesel::joinable!(rel_account_game -> games (games_key));
-diesel::joinable!(rel_game_achievement -> achievements (achievement_key));
-diesel::joinable!(rel_game_achievement -> games (games_key));
-diesel::joinable!(rel_game_target -> games (games_key));
-diesel::joinable!(rel_game_target -> targets (target_key));
+diesel::joinable!(achievements -> games (game_id));
+diesel::joinable!(rel_account_game -> accounts (account_id));
+diesel::joinable!(rel_account_game -> games (game_id));
+diesel::joinable!(rel_game_target -> games (game_id));
+diesel::joinable!(rel_game_target -> targets (target_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
     accounts,
     achievements,
     games,
     rel_account_game,
-    rel_game_achievement,
     rel_game_target,
     targets,
 );
