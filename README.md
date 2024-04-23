@@ -41,11 +41,18 @@ run `npm i` at directory './src-ui',
 
 then run `cargo tauri dev` at root directory
 
+## Backend
+
+The backend in directory /backend, it will simulate a Epic Server for the launcher
+
+Backend will use sqlite as database, feel free add some data you want
+
+Just run: `cargo r` or `docker compose up` in Docker
+
 ## Demonstration
 
 - [Bilibili](https://www.bilibili.com/video/BV1pr421t7kA)
 - [Youtube](https://youtu.be/I7lbnTBLCnU)
-
 
 ![Demonstration](https://raw.githubusercontent.com/dvorakchen/dvorak-epic-games-launcher/main/docs/epic-games-launcher.webp)
 
