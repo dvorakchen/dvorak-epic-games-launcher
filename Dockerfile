@@ -28,16 +28,7 @@ RUN cargo build --release --manifest-path ./backend/Cargo.toml
 
 FROM debian:bullseye-slim AS final
 
-ARG UID=10001
-RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/nonexistent" \
-    --shell "/sbin/nologin" \
-    --no-create-home \
-    --uid "${UID}" \
-    appuser
-USER appuser
+USER root
 
 COPY --from=build /app/backend/target/release/backend /bin/server
 COPY --from=build /app/backend/epic.db /bin/epic.db
