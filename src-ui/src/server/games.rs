@@ -1,22 +1,21 @@
+use super::url_fn;
 use gloo::timers::future::TimeoutFuture;
-use share::{Review, GameCover as GameCoverModel};
+use share::{GameCover as GameCoverModel, Review, ServerResponse};
 
-pub async fn get_my_games() -> Vec<GameCoverModel> {
+url_fn!("games");
+
+pub async fn get_in_library_games(username: impl AsRef<str>) -> Vec<GameCoverModel> {
+    let username = username.as_ref();
     TimeoutFuture::new(1_000).await;
 
-    vec![
-        Default::default(),
-        Default::default(),
-        Default::default(),
-        Default::default(),
-        Default::default(),
-        Default::default(),
-        Default::default(),
-        Default::default(),
-        Default::default(),
-        Default::default(),
-        Default::default(),
-    ]
+    let games = reqwest::get(scope_url(username))
+        .await
+        .unwrap()
+        .json::<ServerResponse<Vec<GameCoverModel>>>()
+        .await
+        .unwrap();
+
+    games.content.unwrap_or(Vec::new())
 }
 
 pub async fn get_installed_games() -> Vec<GameCoverModel> {

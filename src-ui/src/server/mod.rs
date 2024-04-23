@@ -10,6 +10,7 @@ const SERVER_ADDRESS: &str = "http://127.0.0.1:8080";
 ///
 /// # argument:
 /// path: the route, without '/api/'
+#[inline]
 fn get_url(path: impl AsRef<str>) -> String {
     format!("{}/api/{}", SERVER_ADDRESS, path.as_ref())
 }
@@ -37,3 +38,14 @@ pub async fn init_connect_and_sign_in() -> InitStatus {
 
     InitStatus::SignedIn(info)
 }
+
+#[macro_export]
+macro_rules! url_fn {
+    ($api_prefix: expr) => {
+        fn scope_url(path: impl AsRef<str>) -> String {
+            crate::server::get_url(format!("{}/{}", $api_prefix, path.as_ref()))
+        }
+    };
+}
+
+pub use url_fn;

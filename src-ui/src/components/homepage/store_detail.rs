@@ -60,7 +60,7 @@ fn Detail() -> impl IntoView {
             </div>
 
             <div class="my-4">
-                <EpicPlayerRatings/>
+                <EpicPlayerReviews/>
             </div>
         </div>
     }
@@ -395,7 +395,7 @@ fn SystemRequirements() -> impl IntoView {
 }
 
 #[component]
-fn EpicPlayerRatings() -> impl IntoView {
+fn EpicPlayerReviews() -> impl IntoView {
     let reviews = create_resource(
         || {},
         |_| async move { games::get_recently_reviews("".to_string()).await },

@@ -1,14 +1,10 @@
-use super::get_url;
+use super::url_fn;
 use crate::storages::{clear_all, save_signed_in_user_info};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use share::{ServerResponse, SignedInResponse};
 
-const API_PRIFIX: &str = "accounts";
-
-fn acconut_scope_url(path: impl AsRef<str>) -> String {
-    get_url(format!("{}/{}", API_PRIFIX, path.as_ref()))
-}
+url_fn!("accounts");
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct SignedInInfo {
@@ -53,7 +49,7 @@ pub async fn sign_in(
 
     let client = reqwest::Client::new();
     let res = client
-        .post(acconut_scope_url("sign_in"))
+        .post(scope_url("sign_in"))
         .json(&SignInBody {
             email: email.as_ref(),
             password: password.as_ref(),
@@ -89,7 +85,7 @@ pub fn sign_out() {
 pub async fn check_account_exist(email: impl AsRef<str>) -> Result<(), ()> {
     let client = reqwest::Client::new();
     let res = client
-        .post(get_url(format!("{}/exist", API_PRIFIX)))
+        .post(scope_url("exist"))
         .body(email.as_ref().to_string())
         .send()
         .await

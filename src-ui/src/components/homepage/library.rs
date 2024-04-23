@@ -1,5 +1,6 @@
 use crate::server::games;
-use crate::utils::GAME_COVER_IMAGE_PATH;
+use crate::storages::get_signed_in_user_info;
+// use crate::utils::GAME_COVER_IMAGE_PATH;
 use crate::{components::*, utils::Navigation};
 use leptos::{html::Div, *};
 use leptos_router::{use_location, use_navigate, use_query_map};
@@ -114,7 +115,15 @@ fn Sort() -> impl IntoView {
 
 #[component]
 fn Games() -> impl IntoView {
-    let games = create_resource(|| {}, |_| async move { games::get_my_games().await });
+    let user_info = get_signed_in_user_info().unwrap();
+
+    let games = create_resource(
+        || {},
+        move |_| {
+            let username = user_info.username.clone();
+            async move { games::get_in_library_games(username).await }
+        },
+    );
 
     view! {
         <div class="flex flex-wrap">
@@ -152,7 +161,7 @@ fn GameOverSkelecton() -> impl IntoView {
 
 #[component]
 fn GameCover(model: GameCoverModel) -> impl IntoView {
-    let cover_url = format!("{}{}", GAME_COVER_IMAGE_PATH, model.cover_url);
+    // let cover_url = format!("{}{}", GAME_COVER_IMAGE_PATH, model.cover_url);
     let (show_menu, set_show_menu) = create_signal(false);
     let menu_node: NodeRef<Div> = create_node_ref();
 
@@ -202,11 +211,8 @@ fn GameCover(model: GameCoverModel) -> impl IntoView {
         <span class="relative flex flex-col gap-2 w-1/4 aspect-[9/16] rounded-lg p-4
         cursor-pointer
         hover:bg-base-200">
-            <div class=format!(
-                "w-full h-2/3 rounded
-            bg-[url('{}')] bg-cover bg-center",
-                cover_url,
-            )></div>
+            <div class="w-full h-2/3 rounded bg-cover bg-center"
+                style:background-image=format!("url({})", model.cover_url)></div>
             <div class="flex flex-col gap-1">
                 <div class="flex items-center gap-4">
                     <span
