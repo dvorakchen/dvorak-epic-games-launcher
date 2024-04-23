@@ -1,7 +1,6 @@
-use crate::{db::DbPool, models::RelAccountGame};
+use crate::db::DbPool;
 use actix_web::{error::ErrorInternalServerError, get, web, Responder, Result};
-use diesel::prelude::*;
-use log::debug;
+use rusqlite::{params, OptionalExtension};
 use share::{GameCover, ServerResponse};
 
 #[get("{username}")]
@@ -9,39 +8,46 @@ async fn get_in_library_games(
     db: web::Data<DbPool>,
     path: web::Path<String>,
 ) -> Result<impl Responder> {
-    use crate::models::{Account, Game};
-    use crate::schema::accounts::{self, dsl::*};
-    use crate::schema::games::{self, dsl::*};
-    use crate::schema::rel_account_game;
+    let username = path.into_inner();
+    let db = db.get().expect("cannot get DB connection");
 
-    let username_req = path.into_inner();
-    let username_req = username_req.trim();
+    let account_id = db
+        .query_row_and_then(
+            r#"SELECT id FROM accounts WHERE username = ?1 COLLATE NOCASE;"#,
+            params![username.trim()],
+            |row| row.get::<_, i32>(0),
+        )
+        .optional()
+        .unwrap()
+        .ok_or(ErrorInternalServerError(format!("account {} not exist", {
+            username
+        })))?;
 
-    let mut conn = db.get().expect("cannot get DB connection");
+    let mut stmt = db.prepare(r#"SELECT 
+games.id, games.name, unlock_achievement_count, games.cover_link, COUNT(achievements.id) as achievements_amount
+FROM rel_account_game 
+inner join games on rel_account_game.game_id = games.id
+left join achievements on games.id = achievements.game_id
+WHERE account_id = ?1
+group by games.id, unlock_achievement_count, games.name, games.cover_link;"#).unwrap();
 
-    let account_id = accounts
-        .select(accounts::id)
-        .filter(accounts::username.like(username_req))
-        .first::<i32>(&mut conn)
-        .map_err(|_| ErrorInternalServerError(format!("account {} not exist", { username_req })))?;
+    let in_library_games = stmt
+        .query_and_then(params![account_id], |row| {
+            Ok::<_, rusqlite::Error>(GameCover {
+                id: row.get_unwrap("id"),
+                name: row.get_unwrap("name"),
+                cover_url: row.get_unwrap("cover_link"),
+                achievements_amount: row.get_unwrap("achievements_amount"),
+                achievements_completed: row.get_unwrap("unlock_achievement_count"),
+            })
+        })
+        .optional()
+        .unwrap();
 
-    if let Ok(in_library_games) = rel_account_game::table
-        .inner_join(games::table)
-        .filter(rel_account_game::account_id.eq(account_id))
-        .select((games::id, games::name))
-        .load::<(i32, String)>(&mut conn)
-    {
-        Ok(web::Json(ServerResponse::ok(in_library_games)))
+    if let Some(games) = in_library_games {
+        let games: Vec<GameCover> = games.map_while(|game| game.ok()).collect();
+        Ok(web::Json(ServerResponse::ok(games)))
     } else {
         Ok(web::Json(ServerResponse::ok(vec![])))
     }
-
-    // games
-    //     .grouped_by(&current_account)
-    //     .into_iter()
-    //     .zip(current_account)
-    //     .map(|(games, account)| (account, games))
-    //     .first::<(Account, Vec<Game>)>();
-
-    // Ok(web::Json(ServerResponse::ok(in_library_games)))
 }

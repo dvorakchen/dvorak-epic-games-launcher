@@ -65,7 +65,6 @@ pub async fn sign_in(
         .await
         .map_err(|_| SignInError::WrongCredential)?;
 
-    leptos::logging::log!("response: {}", serde_json::to_string(&res).unwrap());
     gloo::timers::future::TimeoutFuture::new(1_000).await;
 
     match res {

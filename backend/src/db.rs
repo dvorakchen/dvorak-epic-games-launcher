@@ -1,17 +1,13 @@
 use std::env;
 
-use diesel::r2d2::ConnectionManager;
-use diesel::SqliteConnection;
 use r2d2::Pool;
+use r2d2_sqlite::SqliteConnectionManager;
 
-pub type DbPool = r2d2::Pool<ConnectionManager<SqliteConnection>>;
+pub type DbPool = Pool<SqliteConnectionManager>;
 
 pub fn get_connection_pool() -> DbPool {
     log::info!("Connecting to the database.");
     let db_path = env::var("DATABASE_URL").expect("did not set DATABASE_URL");
-    let manager = ConnectionManager::<SqliteConnection>::new(db_path);
-
-    Pool::builder()
-        .build(manager)
-        .expect("Failed to create connection Pool")
+    let manager = SqliteConnectionManager::file(db_path);
+    r2d2::Pool::new(manager).unwrap()
 }

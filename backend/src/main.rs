@@ -1,7 +1,5 @@
 mod api;
 mod db;
-mod models;
-mod schema;
 
 use actix_cors::Cors;
 use actix_web::{

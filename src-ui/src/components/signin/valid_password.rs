@@ -112,9 +112,6 @@ fn PasswordInput() -> impl IntoView {
         let (email, password) = input.clone();
 
         async move {
-            use gloo::timers::future::TimeoutFuture;
-            TimeoutFuture::new(1_000).await;
-
             sign_in(email, password)
                 .await
                 .map_err(|_| "Sorry the credentials you are using are invalid.")

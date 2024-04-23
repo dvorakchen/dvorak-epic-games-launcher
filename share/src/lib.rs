@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameCover {
-    pub id: String,
+    pub id: i32,
     pub name: String,
     pub cover_url: String,
     pub achievements_amount: usize,
@@ -15,7 +15,7 @@ pub struct GameCover {
 impl Default for GameCover {
     fn default() -> Self {
         GameCover {
-            id: "0".to_owned(),
+            id: 0,
             name: "Black Myth Wukong".to_owned(),
             cover_url: "black-myth-wukong.jpg".to_owned(),
             achievements_amount: 10,
