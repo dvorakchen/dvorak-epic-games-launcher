@@ -4,7 +4,11 @@ pub mod signin_signout;
 use crate::storages::get_signed_in_user_info;
 use signin_signout::*;
 
+#[cfg(any(debug_assertions, test))]
 const SERVER_ADDRESS: &str = "http://127.0.0.1:8080";
+
+#[cfg(not(any(debug_assertions, test)))]
+const SERVER_ADDRESS: &str = "https://epicapi.rustsoft.cn";
 
 /// server address combine with path,
 ///

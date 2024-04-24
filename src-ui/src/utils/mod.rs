@@ -14,7 +14,7 @@ pub fn is_click_outside(x: f32, y: f32, container: HtmlElement<Div>) -> bool {
     }
 }
 
-pub const GAME_COVER_IMAGE_PATH: &'static str = "/assets/images/games/";
+// pub const GAME_COVER_IMAGE_PATH: &'static str = "/assets/images/games/";
 
 /// Navigation
 /// use this navigation to redirects to a new url,

@@ -1,12 +1,12 @@
 {
   "build": {
-    "beforeBuildCommand": "cd src-ui && trunk build",
+    "beforeBuildCommand": "cd src-ui && trunk build --release",
     "beforeDevCommand": "cd src-ui && trunk serve",
     "devPath": "http://localhost:1420",
     "distDir": "../src-ui/dist"
   },
   "package": {
-    "productName": "Dvorak's Epic Games Launcher",
+    "productName": "Dvorak Epic Games Launcher",
     "version": "0.0.1"
   },
   "tauri": {
